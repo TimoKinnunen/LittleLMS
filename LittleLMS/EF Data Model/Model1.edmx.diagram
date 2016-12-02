@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6b298d463bbb40e5bca606321973f5c7" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Activities" Width="1.5" PointX="8.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ActivityTypes" Width="1.5" PointX="8.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserRoles" Width="2" PointX="4.375" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUsers" Width="2.25" PointX="0.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Courses" Width="1.5" PointX="3.625" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Documents" Width="1.5" PointX="11.375" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.DocumentTypes" Width="1.5" PointX="11.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Modules" Width="1.5" PointX="6.125" PointY="4.5" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Activities_dbo_Modules_ModuleId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUsers_dbo_Courses_CourseId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Modules_dbo_Courses_CourseId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.ApplicationUserDocuments" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.CourseDocuments" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.DocumentActivities" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.ModuleDocuments" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
