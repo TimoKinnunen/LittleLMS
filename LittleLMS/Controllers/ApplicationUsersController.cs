@@ -1,8 +1,11 @@
-﻿using LittleLMS.Models;
+﻿using LittleLMS.LittleLMSViewModels;
+using LittleLMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -52,7 +55,40 @@ namespace LittleLMS.Controllers
         // GET: ApplicationUsers
         public async Task<ActionResult> Index()
         {
-            return View(await ApplicationUserManager.Users.Include(a => a.Course).ToListAsync());
+
+            ApplicationDbContext db = new ApplicationDbContext();
+            List<ApplicationUserViewModel> applicationUserViewModels = new List<ApplicationUserViewModel>();
+            foreach (var applicationUser in ApplicationUserManager.Users)
+            {
+                int courseId;
+                string courseName;
+
+                if (applicationUser.CourseId.HasValue)
+                {
+                    courseId = (int)applicationUser.CourseId;
+                    var course = await db.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
+                    courseName = course.Name;
+                }
+                else
+                {
+                    courseId = 0;
+                    courseName = "kursnamn saknas";
+                }
+                ApplicationUserViewModel applicationUserViewModel = new ApplicationUserViewModel
+                {
+                    Id = applicationUser.Id,
+                    CourseId = courseId,
+                    CourseName = courseName,
+                    Email = applicationUser.Email,
+                    FirstName = applicationUser.FirstName,
+                    LastName = applicationUser.LastName,
+                    FullName = applicationUser.FirstName,
+                    TimeOfRegistration = applicationUser.TimeOfRegistration
+                };
+                applicationUserViewModels.Add(applicationUserViewModel);
+            }
+
+            return View(applicationUserViewModels);
         }
 
         // GET: ApplicationUsers/Details/5

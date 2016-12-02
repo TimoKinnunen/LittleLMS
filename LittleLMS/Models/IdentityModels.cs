@@ -27,14 +27,14 @@ namespace LittleLMS.Models
         public virtual Course Course { get; set; }
 
         [Required]
-        [Display(Name = "First name")]
+        [Display(Name = "Fönamn")]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Last name")]
+        [Display(Name = "Efternamn")]
         public string LastName { get; set; }
 
-        [Display(Name = "Full name")]
+        [Display(Name = "Fullständigt namn")]
         public string FullName { get { return FirstName + " " + LastName; } }
 
         [Display(Name = "Time of registration")]

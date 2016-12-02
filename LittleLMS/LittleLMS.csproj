@@ -230,6 +230,7 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
+    <Compile Include="LittleLMSViewModels\ApplicationUserViewModel.cs" />
     <Compile Include="Migrations\201612021024202_Init.cs" />
     <Compile Include="Migrations\201612021024202_Init.Designer.cs">
       <DependentUpon>201612021024202_Init.cs</DependentUpon>
