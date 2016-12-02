@@ -1,7 +1,8 @@
-﻿@model LittleLMS.LittleLMSModels.Course
+﻿@model LittleLMS.LittleLMSModels.Overview
 
 @{
     ViewBag.Title = "Details";
+    var modules = (IEnumerable<LittleLMS.LittleLMSModels.Module>) ViewBag.Anders;
 }
 
 <h2>Details</h2>
@@ -11,30 +12,68 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.CourseName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.CourseName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.CourseDescription)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.CourseDescription)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.DisplayNameFor(model => model.CourseStartDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.StartDate)
+            @Html.DisplayFor(model => model.CourseStartDate)
         </dd>
 
     </dl>
+    <h4>Module</h4>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ModuleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModuleDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModuleStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModuleEndDate)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in modules) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+            </tr>
+        }
+
+    </table>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

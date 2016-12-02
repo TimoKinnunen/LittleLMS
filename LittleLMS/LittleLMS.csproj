@@ -191,6 +191,7 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
+    <Compile Include="LittleLMSModels\Overview.cs" />
     <Compile Include="Migrations\201612012212262_Init.cs" />
     <Compile Include="Migrations\201612012212262_Init.Designer.cs">
       <DependentUpon>201612012212262_Init.cs</DependentUpon>
