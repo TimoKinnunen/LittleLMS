@@ -7,6 +7,8 @@ using System.Web.Mvc;
 namespace LittleLMS.LittleLMSControllers
 {
     using System.Data.Entity;
+    using System.Linq;
+
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -25,11 +27,35 @@ namespace LittleLMS.LittleLMSControllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = await db.Courses.FindAsync(id);
+
             if (course == null)
             {
                 return HttpNotFound();
             }
-            return View(course);
+
+            //Module module = await db.Modules.FindAsync(id);
+            //if (module == null) {
+            //    return HttpNotFound();
+            //}
+
+            var modules = db.Modules.Where(a => a.Id == course.Id).ToList();
+            if (modules == null) {
+                return HttpNotFound();
+            }
+            ViewBag.Anders = modules;
+
+            //Overview overview = new Overview();
+            //overview.Id = course.Id;
+            //overview.CourseName = course.Name;
+            //overview.CourseDescription = course.Description;
+            //overview.CourseStartDate = course.StartDate;
+            //overview.ModuleName = module.Name;
+            //overview.ModuleDescription = module.Description;
+            //overview.ModuleStartDate = module.StartDate;
+            //overview.ModuleEndDate = module.EndDate;
+            //return View(overview);
+
+            return View();
         }
 
         // GET: Courses/Create

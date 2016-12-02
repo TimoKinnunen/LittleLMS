@@ -230,10 +230,10 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
-    <Compile Include="LittleLMSViewModels\ApplicationUserViewModel.cs" />
-    <Compile Include="Migrations\201612021024202_Init.cs" />
-    <Compile Include="Migrations\201612021024202_Init.Designer.cs">
-      <DependentUpon>201612021024202_Init.cs</DependentUpon>
+   
+    <Compile Include="Migrations\201612021023458_ytterligareInit.cs" />
+    <Compile Include="Migrations\201612021023458_ytterligareInit.Designer.cs">
+      <DependentUpon>201612021023458_ytterligareInit.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -384,6 +384,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612021024202_Init.resx">
       <DependentUpon>201612021024202_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612021023458_ytterligareInit.resx">
+      <DependentUpon>201612021023458_ytterligareInit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
