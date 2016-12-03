@@ -230,11 +230,6 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
-   
-    <Compile Include="Migrations\201612021023458_ytterligareInit.cs" />
-    <Compile Include="Migrations\201612021023458_ytterligareInit.Designer.cs">
-      <DependentUpon>201612021023458_ytterligareInit.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -380,14 +375,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612021024202_Init.resx">
-      <DependentUpon>201612021024202_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612021023458_ytterligareInit.resx">
-      <DependentUpon>201612021023458_ytterligareInit.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
