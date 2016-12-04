@@ -3,11 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LittleLMS.LittleLMSViewModels
 {
-    public class ApplicationUserViewModel
+    public class ElevViewModel
     {
         public string Id { get; set; }
 
-        [Display(Name = "Course id")]
+        [Display(Name = "Roll namn")]
+        public string RoleName { get; set; }
+
+        [Display(Name = "Kurs id")]
         public int CourseId { get; set; }
 
         [Display(Name = "Kurs namn")]
@@ -16,13 +19,13 @@ namespace LittleLMS.LittleLMSViewModels
         [Display(Name = "E-post")]
         public string Email { get; set; }
 
-        [Display(Name = "Fönamn")]
+        [Display(Name = "Förnamn")]
         public string FirstName { get; set; }
 
         [Display(Name = "Efternamn")]
         public string LastName { get; set; }
 
-        [Display(Name = "Fullständigt namn")]
+        [Display(Name = "Namn")]
         public string FullName { get; set; }
 
         [Display(Name = "Kurs start datum")]

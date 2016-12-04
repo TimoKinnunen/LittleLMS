@@ -24,20 +24,21 @@ namespace LittleLMS.Models
 
         public int? CourseId { get; set; }
         [ForeignKey("CourseId")]
+        [Display(Name = "Kurs")]
         public virtual Course Course { get; set; }
 
         [Required]
-        [Display(Name = "Fönamn")]
+        [Display(Name = "Förnamn")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Efternamn")]
         public string LastName { get; set; }
 
-        [Display(Name = "Fullständigt namn")]
+        [Display(Name = "Namn")]
         public string FullName { get { return FirstName + " " + LastName; } }
 
-        [Display(Name = "Time of registration")]
+        [Display(Name = "Tid för registrering")]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         public DateTime TimeOfRegistration { get; set; }
 
@@ -52,6 +53,13 @@ namespace LittleLMS.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+        }
+
+        static ApplicationDbContext()
+        {
+            // Set the database intializer which is run once during application start
+            // This seeds the database with admin user credentials and admin role
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
         }
 
         public static ApplicationDbContext Create()
