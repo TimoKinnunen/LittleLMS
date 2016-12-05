@@ -55,7 +55,7 @@ namespace LittleLMS.LittleLMSControllers
             //overview.ModuleEndDate = module.EndDate;
             //return View(overview);
 
-            return View();
+            return View(course);
         }
 
         // GET: Courses/Create
