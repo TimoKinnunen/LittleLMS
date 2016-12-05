@@ -18,24 +18,25 @@ namespace LittleLMS.LittleLMSModels
         [ForeignKey("ModuleId")]
         public virtual Module Module { get; set; }
 
-        [Required(ErrorMessage = "Du måste mata in aktivitetets namn.")]
-        [Display(Name = "Activity name")]
+        [Required(ErrorMessage = "Du måste mata in aktivitetens namn.")]
+        [Display(Name = "Aktivitetens namn")]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Aktivitetens beskrivning")]
         public string Description { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Activity start date")]
+        [Display(Name = "Aktivitetens start datum")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Activity end date")]
+        [Display(Name = "Aktivitetens slut datum")]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         public DateTime EndDate { get; set; }
 
         // navigation property
-        [Display(Name = "Activity documents")]
+        [Display(Name = "Aktivitetens dokumenter")]
         public virtual ICollection<Document> ActivityDocuments { get; set; }
     }
 }

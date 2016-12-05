@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - LittleLMS</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -17,23 +17,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("LittleLMS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Startsida", "Index", "Home")</li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                    <li>@Html.ActionLink("Course", "Index", "Courses")</li>
-                    <li>@Html.ActionLink("Module", "Index", "Modules")</li>
-                    <li>@Html.ActionLink("Activity", "Index", "Activities")</li>
-                    <li>@Html.ActionLink("Activity type", "Index", "ActivityTypes")</li>
-                    <li>@Html.ActionLink("Document", "Index", "Documents")</li>
-                    <li>@Html.ActionLink("Document type", "Index", "DocumentTypes")</li>
+                    <li>@Html.ActionLink("Kurs", "Index", "Courses")</li>
+                    <li>@Html.ActionLink("Modul", "Index", "Modules")</li>
+                    <li>@Html.ActionLink("Aktivitet", "Index", "Activities")</li>
+                    <li>@Html.ActionLink("Aktivitetens typ", "Index", "ActivityTypes")</li>
+                    <li>@Html.ActionLink("Dokument", "Index", "Documents")</li>
+                    <li>@Html.ActionLink("Dokumentets typ", "Index", "DocumentTypes")</li>
 
                     <li>@*@Html.ActionLink("User management", "Index", "ApplicationUsers")*@</li>
-                    <li>@Html.ActionLink("Role management", "Index", "RolesAdmin")</li>
-                    <li>@Html.ActionLink("User management", "Index", "UsersAdmin")</li>
+                    <li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>
+                    <li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>
                     
                     @if (Request.IsAuthenticated && User.IsInRole("Lärare"))
                     {
@@ -50,7 +50,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - LittleLMS</p>
         </footer>
     </div>
 

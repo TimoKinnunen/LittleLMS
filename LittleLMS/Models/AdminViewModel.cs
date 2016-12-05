@@ -8,7 +8,7 @@ namespace LittleLMS.Models
     {
         public string Id { get; set; }
         [Required(AllowEmptyStrings = false)]
-        [Display(Name = "RoleName")]
+        [Display(Name = "Rollens namn")]
         public string Name { get; set; }
     }
 
@@ -16,8 +16,16 @@ namespace LittleLMS.Models
     {
         public string Id { get; set; }
 
+        [Required]
+        [Display(Name = "Förnamn")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Efternamn")]
+        public string LastName { get; set; }
+
         [Required(AllowEmptyStrings = false)]
-        [Display(Name = "Email")]
+        [Display(Name = "E-post adress")]
         [EmailAddress]
         public string Email { get; set; }
 

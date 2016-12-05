@@ -12,21 +12,22 @@ namespace LittleLMS.LittleLMSModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Document type id")]
+        [Display(Name = "Dokumentets typ id")]
         public int DocumentTypeId { get; set; }
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
 
         [Required]
-        [Display(Name = "Document name")]
+        [Display(Name = "Dokumentets namn")]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Dokumentets beskrivning")]
         public string Description { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Document start date")]
+        [Display(Name = "Dokumentets start datum")]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Feedback")]
@@ -34,19 +35,19 @@ namespace LittleLMS.LittleLMSModels
 
 
         // navigation property
-        [Display(Name = "Document applicationUsers")]
+        [Display(Name = "Dokumentets användare")]
         public virtual ICollection<ApplicationUser> DocumentApplicationUsers { get; set; }
 
         // navigation property
-        [Display(Name = "Document courses")]
+        [Display(Name = "Dokumentets kurser")]
         public virtual ICollection<Course> DocumentCourses { get; set; }
 
         // navigation property
-        [Display(Name = "Document mmodules")]
+        [Display(Name = "Dokumentets mmoduler")]
         public virtual ICollection<Module> DocumentModules { get; set; }
 
         // navigation property
-        [Display(Name = "Document activities")]
+        [Display(Name = "Dokumentets aktiviteter")]
         public virtual ICollection<Activity> DocumentActivities { get; set; }
     }
 }

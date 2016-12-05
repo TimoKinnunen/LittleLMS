@@ -43,7 +43,7 @@ namespace LittleLMS.Models
         public DateTime TimeOfRegistration { get; set; }
 
         // navigation property
-        [Display(Name = "User documents")]
+        [Display(Name = "Användarens dokumenter")]
         public virtual ICollection<Document> UserDocuments { get; set; }
 
     }

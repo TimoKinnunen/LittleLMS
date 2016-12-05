@@ -4,25 +4,32 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details.</h2>
+<h2>Användarens detaljer.</h2>
 
 <div>
-    <h4>User</h4>
+    <h4>Användare.</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.UserName)*@
+            @Html.Label("Användarnamn")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.UserName)
         </dd>
     </dl>
 </div>
-<h4>List of roles for this user</h4>
+<h4>Lista av roller för denna användare:</h4>
 @if (ViewBag.RoleNames.Count == 0)
 {
     <hr />
-    <p>No roles found for this user.</p>
+    <p>Inga roller kopplade till denna användare.</p>
 }
 
 <table class="table">
@@ -37,8 +44,8 @@
     }
 </table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index")
 </p>
 
 

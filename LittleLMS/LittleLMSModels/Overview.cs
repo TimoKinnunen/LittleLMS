@@ -15,7 +15,7 @@ namespace LittleLMS.LittleLMSModels
         [Display(Name = "Course start date")]
         public DateTime CourseStartDate { get; set; }
 
-        [Display(Name = "Module name")]
+        [Display(Name = "Modulens namn")]
         public string ModuleName { get; set; }
 
         [Display(Name = "Description")]

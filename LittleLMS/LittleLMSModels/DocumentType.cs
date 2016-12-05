@@ -8,7 +8,7 @@ namespace LittleLMS.LittleLMSModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Document type")]
+        [Display(Name = "Dokument typ")]
         public string Name { get; set; } = "Inlämningsuppgift";
     }
 }
