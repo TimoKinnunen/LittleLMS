@@ -1,5 +1,6 @@
 ﻿using LittleLMS.Models;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -86,7 +87,14 @@ namespace LittleLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email };
+                if (selectedRoles == null || selectedRoles.Count() > 1 || selectedRoles.Count() == 0)
+                {
+                    ModelState.AddModelError("", "Välj rollen 'Elev' eller rollen 'Lärare'.");
+                    ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                    return View();
+                }
+                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName };
+                user.TimeOfRegistration = DateTime.Now;
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 
