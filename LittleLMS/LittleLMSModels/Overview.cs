@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace LittleLMS.LittleLMSModels {
+namespace LittleLMS.LittleLMSModels
+{
     public class Overview {
         public int Id { get; set; }
 

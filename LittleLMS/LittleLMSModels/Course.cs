@@ -11,7 +11,7 @@ namespace LittleLMS.LittleLMSModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Course name")]
+        [Display(Name = "Kurs namn")]
         public string Name { get; set; }
 
         [Required]
@@ -19,11 +19,11 @@ namespace LittleLMS.LittleLMSModels
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Course start date")]
+        [Display(Name = "Kurs start datum")]
         public DateTime StartDate { get; set; }
 
         // navigation property
-        [Display(Name = "Course documents")]
+        [Display(Name = "Kurs dokumenter")]
         public virtual ICollection<Document> CourseDocuments { get; set; }
 
         [Display(Name = "Course modules")]

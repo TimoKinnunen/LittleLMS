@@ -117,19 +117,23 @@ namespace LittleLMS.Migrations
 
             string roleNameLärare = "Lärare";
             string roleNameElev = "Elev";
-            if (!roleManager.RoleExists(roleNameLärare)) {
+            if (!roleManager.RoleExists(roleNameLärare))
+            {
                 var roleresult = roleManager.Create(new IdentityRole(roleNameLärare));
             }
 
-            if (!roleManager.RoleExists(roleNameElev)) {
+            if (!roleManager.RoleExists(roleNameElev))
+            {
                 var roleresult = roleManager.Create(new IdentityRole(roleNameElev));
             }
 
             string userName = "stina.larsson@lexicon.se";
             string password = "Lexicon01!";
             ApplicationUser user = userManager.FindByName(userName);
-            if (user == null) {
-                user = new ApplicationUser() {
+            if (user == null)
+            {
+                user = new ApplicationUser()
+                {
                     UserName = userName,
                     Email = userName,
                     FirstName = "Stina",
@@ -139,15 +143,18 @@ namespace LittleLMS.Migrations
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
-                if (userResult.Succeeded) {
+                if (userResult.Succeeded)
+                {
                     var result = userManager.AddToRole(user.Id, roleNameLärare);
                 }
             }
 
             userName = "nisse.hult@lexicon.se";
             user = userManager.FindByName(userName);
-            if (user == null) {
-                user = new ApplicationUser() {
+            if (user == null)
+            {
+                user = new ApplicationUser()
+                {
                     UserName = userName,
                     Email = userName,
                     FirstName = "Nisse",
@@ -157,15 +164,18 @@ namespace LittleLMS.Migrations
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
-                if (userResult.Succeeded) {
+                if (userResult.Succeeded)
+                {
                     var result = userManager.AddToRole(user.Id, roleNameLärare);
                 }
             }
 
             userName = "goran.persson@lexicon.se";
             user = userManager.FindByName(userName);
-            if (user == null) {
-                user = new ApplicationUser() {
+            if (user == null)
+            {
+                user = new ApplicationUser()
+                {
                     UserName = userName,
                     Email = userName,
                     FirstName = "Göran",
@@ -174,15 +184,18 @@ namespace LittleLMS.Migrations
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
-                if (userResult.Succeeded) {
+                if (userResult.Succeeded)
+                {
                     var result = userManager.AddToRole(user.Id, roleNameElev);
                 }
             }
 
             userName = "kajsa.kavat@lexicon.se";
             user = userManager.FindByName(userName);
-            if (user == null) {
-                user = new ApplicationUser() {
+            if (user == null)
+            {
+                user = new ApplicationUser()
+                {
                     UserName = userName,
                     Email = userName,
                     FirstName = "Kajsa",
@@ -191,7 +204,8 @@ namespace LittleLMS.Migrations
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
-                if (userResult.Succeeded) {
+                if (userResult.Succeeded)
+                {
                     var result = userManager.AddToRole(user.Id, roleNameElev);
                 }
             }

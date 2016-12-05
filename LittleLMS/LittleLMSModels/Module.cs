@@ -12,6 +12,7 @@ namespace LittleLMS.LittleLMSModels
 
         public int CourseId { get; set; }
         [ForeignKey("CourseId")]
+        [Display(Name = "Kurs namn")]
         public virtual Course Course { get; set; }
 
         [Required]

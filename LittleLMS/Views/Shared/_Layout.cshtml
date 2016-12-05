@@ -31,8 +31,16 @@
                     <li>@Html.ActionLink("Document", "Index", "Documents")</li>
                     <li>@Html.ActionLink("Document type", "Index", "DocumentTypes")</li>
 
-                    <li>@Html.ActionLink("User management", "Index", "ApplicationUsers")</li>
+                    <li>@*@Html.ActionLink("User management", "Index", "ApplicationUsers")*@</li>
+                    <li>@Html.ActionLink("Role management", "Index", "RolesAdmin")</li>
+                    <li>@Html.ActionLink("User management", "Index", "UsersAdmin")</li>
                     
+                    @if (Request.IsAuthenticated && User.IsInRole("Lärare"))
+                    {
+                        @*<li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>*@
+                    }
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
