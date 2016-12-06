@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace LittleLMS.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Lärare")]
     public class RolesAdminController : Controller
     {
         public RolesAdminController()

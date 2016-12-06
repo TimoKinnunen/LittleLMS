@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace LittleLMS.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Lärare")]
     public class UsersAdminController : Controller
     {
         public UsersAdminController()
@@ -178,6 +178,25 @@ namespace LittleLMS.Controllers
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
                 selectedRole = selectedRole ?? new string[] { };
+
+                if (selectedRole == null || selectedRole.Count() > 1 || selectedRole.Count() == 0)
+                {
+                    ModelState.AddModelError("", "Välj rollen 'Elev' eller rollen 'Lärare'.");
+                    //ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                    return View(new EditUserViewModel()
+                    {
+                        Id = user.Id,
+                        Email = editUser.Email,
+                        FirstName = editUser.FirstName,
+                        LastName = editUser.LastName,
+                        RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                        {
+                            Selected = userRoles.Contains(x.Name),
+                            Text = x.Name,
+                            Value = x.Name
+                        })
+                    });
+                }
 
                 var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());
 

@@ -9,6 +9,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Data.Entity;
     using System.Linq;
 
+    [Authorize(Roles = "Lärare,Elev")]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -19,7 +20,8 @@ namespace LittleLMS.LittleLMSControllers
             return View(await db.Courses.ToListAsync());
         }
 
-        public ActionResult Modules(int id) {
+        public ActionResult Modules(int id)
+        {
             var modules = db.Modules.Where(m => m.Id == id).ToList();
 
             return View(modules);

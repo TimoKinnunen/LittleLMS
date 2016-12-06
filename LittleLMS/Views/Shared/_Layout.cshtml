@@ -21,24 +21,37 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Startsida", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                    <li>@Html.ActionLink("Kurs", "Index", "Courses")</li>
-                    <li>@Html.ActionLink("Modul", "Index", "Modules")</li>
-                    <li>@Html.ActionLink("Aktivitet", "Index", "Activities")</li>
-                    <li>@Html.ActionLink("Aktivitetstyp", "Index", "ActivityTypes")</li>
-                    <li>@Html.ActionLink("Dokument", "Index", "Documents")</li>
-                    <li>@Html.ActionLink("Dokumenttyp", "Index", "DocumentTypes")</li>
 
-                    <li>@*@Html.ActionLink("User management", "Index", "ApplicationUsers")*@</li>
-                    <li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>
-                    <li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>
-                    
                     @if (Request.IsAuthenticated && User.IsInRole("Lärare"))
                     {
-                        @*<li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>*@
+                        @*<li>@Html.ActionLink("Startsida", "Index", "Home")</li>*@
+                        @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                        @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("Kurser", "Index", "Courses")</li>
+                        @*<li>@Html.ActionLink("Moduler", "Index", "Modules")</li>
+                        <li>@Html.ActionLink("Aktiviteter", "Index", "Activities")</li>
+                        <li>@Html.ActionLink("Aktivitetstyper", "Index", "ActivityTypes")</li>
+                        <li>@Html.ActionLink("Dokument", "Index", "Documents")</li>
+                        <li>@Html.ActionLink("Dokumenttyper", "Index", "DocumentTypes")</li>*@
+
+                        @*<li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>*@
+                        <li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>
+                    }
+
+                    @if (Request.IsAuthenticated && User.IsInRole("Elev"))
+                    {
+                        @*<li>@Html.ActionLink("Startsida", "Index", "Home")</li>*@
+                        @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                        @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("Kurs", "Index", "Courses")</li>
+                        @*<li>@Html.ActionLink("Moduler", "Index", "Modules")</li>
+                        <li>@Html.ActionLink("Aktiviteter", "Index", "Activities")</li>
+                        <li>@Html.ActionLink("Aktivitetstyper", "Index", "ActivityTypes")</li>
+                        <li>@Html.ActionLink("Dokument", "Index", "Documents")</li>
+                        <li>@Html.ActionLink("Dokumenttyper", "Index", "DocumentTypes")</li>*@
+
+                        @*<li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>*@
+                        @*<li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>*@
                     }
 
                 </ul>
