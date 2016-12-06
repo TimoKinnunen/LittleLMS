@@ -7,16 +7,37 @@ using System.Web.Mvc;
 namespace LittleLMS.LittleLMSControllers
 {
     using System.Data.Entity;
+    using System.Linq;
+
     public class ModulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Modules
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? id)
         {
-            var modules = db.Modules.Include(m => m.Course);
+            int courseId = (int)id;
+            if (id == null) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var modules = db.Modules.Where(m => m.Course.Id == courseId);
+
+            if (modules == null) {
+                return HttpNotFound();
+            }
+
+            var x = db.Courses.FirstOrDefault(m => m.Id == id);
+            ViewBag.CourseName = x.Name;
+
             return View(await modules.ToListAsync());
         }
+
+        //public ActionResult Moduler(int id) {
+        //    var moduler = db.Modules.Where(m => m.Id == id).ToList();
+
+        //    return View(moduler);
+        //}
 
         // GET: Modules/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -51,7 +72,7 @@ namespace LittleLMS.LittleLMSControllers
             {
                 db.Modules.Add(module);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", module.CourseId);
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
