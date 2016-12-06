@@ -139,7 +139,8 @@ namespace LittleLMS.Migrations
                     FirstName = "Stina",
                     LastName = "Larsson",
                     TimeOfRegistration = DateTime.Now,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
@@ -160,7 +161,8 @@ namespace LittleLMS.Migrations
                     FirstName = "Nisse",
                     LastName = "Hult",
                     TimeOfRegistration = DateTime.Now,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, Java").Id
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
@@ -180,7 +182,10 @@ namespace LittleLMS.Migrations
                     Email = userName,
                     FirstName = "Göran",
                     LastName = "Persson",
-                    TimeOfRegistration = DateTime.Now
+                    TimeOfRegistration = DateTime.Now,
+                    EmailConfirmed = true,
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, Java").Id
+
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
@@ -201,6 +206,8 @@ namespace LittleLMS.Migrations
                     FirstName = "Kajsa",
                     LastName = "Kavat",
                     TimeOfRegistration = DateTime.Now,
+                    EmailConfirmed = true,
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
