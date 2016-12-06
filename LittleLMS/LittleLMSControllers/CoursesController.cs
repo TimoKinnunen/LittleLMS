@@ -9,6 +9,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Data.Entity;
     using System.Linq;
 
+    [Authorize(Roles = "Lärare,Elev")]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
