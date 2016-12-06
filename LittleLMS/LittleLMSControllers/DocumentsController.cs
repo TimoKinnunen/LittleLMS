@@ -7,6 +7,8 @@ using System.Web.Mvc;
 namespace LittleLMS.LittleLMSControllers
 {
     using System.Data.Entity;
+
+    [Authorize(Roles = "Lärare,Elev")]
     public class DocumentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

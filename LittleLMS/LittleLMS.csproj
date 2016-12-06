@@ -203,7 +203,6 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
-    <Compile Include="LittleLMSViewModels\ElevViewModel.cs" />
     <Compile Include="Migrations\201612031029220_Init.cs" />
     <Compile Include="Migrations\201612031029220_Init.Designer.cs">
       <DependentUpon>201612031029220_Init.cs</DependentUpon>
@@ -329,6 +328,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="EF Data Model\" />
+    <Folder Include="LittleLMSViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
