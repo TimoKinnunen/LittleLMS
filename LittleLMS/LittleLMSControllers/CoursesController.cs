@@ -19,11 +19,11 @@ namespace LittleLMS.LittleLMSControllers
             return View(await db.Courses.ToListAsync());
         }
 
-        public ActionResult Modules(int id) {
-            var modules = db.Modules.Where(m => m.Id == id).ToList();
+        //public ActionResult Modules(int id) {
+        //    var modules = db.Modules.Where(m => m.Id == id).ToList();
 
-            return View(modules);
-        }
+        //    return View(modules);
+        //}
 
         // GET: Courses/Details/5
         public async Task<ActionResult> Details(int? id)

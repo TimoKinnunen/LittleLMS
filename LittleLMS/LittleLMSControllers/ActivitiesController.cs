@@ -7,14 +7,26 @@ using System.Web.Mvc;
 namespace LittleLMS.LittleLMSControllers
 {
     using System.Data.Entity;
+    using System.Linq;
+
     public class ActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? id)
         {
-            var activities = db.Activities.Include(a => a.ActivityType).Include(a => a.Module);
+            //var activities = db.Activities.Include(a => a.ActivityType).Include(a => a.Module);
+            int moduleId = (int)id;
+            if (id == null) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var activities = db.Activities.Where(a => a.Module.Id == moduleId);
+            if (activities == null) {
+                return HttpNotFound();
+            }
+
             return View(await activities.ToListAsync());
         }
 
