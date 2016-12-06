@@ -184,7 +184,7 @@ namespace LittleLMS.Migrations
                     LastName = "Persson",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
-                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, Java").Id
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling xxxx, Java").Id
 
                 };
 

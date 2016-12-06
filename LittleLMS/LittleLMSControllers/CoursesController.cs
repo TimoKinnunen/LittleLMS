@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers {
     using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.AspNet.Identity;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -46,8 +47,10 @@ namespace LittleLMS.LittleLMSControllers {
         public async Task<ActionResult> Index() {
 
             if (User.IsInRole("Elev")) {
-                //var user = await UserManager.FindByIdAsync(model.Email);
-                return View(await db.Courses.Where(c => c.Id == 1).ToListAsync());
+                var userId = User.Identity.GetUserId();
+                ApplicationUser user = await UserManager.FindByIdAsync(userId);
+                var courseId = user.CourseId;
+                return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
 
             if (User.IsInRole("Lärare")) {
@@ -58,7 +61,7 @@ namespace LittleLMS.LittleLMSControllers {
         }
 
         //public ActionResult Modules(int id) {
-         //    var modules = db.Modules.Where(m => m.Id == id).ToList();
+        //    var modules = db.Modules.Where(m => m.Id == id).ToList();
 
         //    return View(modules);
         //}
