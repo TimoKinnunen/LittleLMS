@@ -19,6 +19,12 @@ namespace LittleLMS.LittleLMSControllers
             return View(await db.Courses.ToListAsync());
         }
 
+        public ActionResult Modules(int id) {
+            var modules = db.Modules.Where(m => m.Id == id).ToList();
+
+            return View(modules);
+        }
+
         // GET: Courses/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -38,11 +44,11 @@ namespace LittleLMS.LittleLMSControllers
             //    return HttpNotFound();
             //}
 
-            var modules = db.Modules.Where(a => a.Id == course.Id).ToList();
-            if (modules == null) {
-                return HttpNotFound();
-            }
-            ViewBag.Anders = modules;
+            //var modules = db.Modules.Where(a => a.Id == course.Id).ToList();
+            //if (modules == null) {
+            //    return HttpNotFound();
+            //}
+            //ViewBag.Anders = modules;
 
             //Overview overview = new Overview();
             //overview.Id = course.Id;
@@ -55,7 +61,7 @@ namespace LittleLMS.LittleLMSControllers
             //overview.ModuleEndDate = module.EndDate;
             //return View(overview);
 
-            return View();
+            return View(course);
         }
 
         // GET: Courses/Create

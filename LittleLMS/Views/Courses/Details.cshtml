@@ -1,8 +1,7 @@
-﻿@model LittleLMS.LittleLMSModels.Module
+﻿@model LittleLMS.LittleLMSModels.Overview
 
 @{
     ViewBag.Title = "Details";
-    var modules = (IEnumerable<LittleLMS.LittleLMSModels.Module>) ViewBag.Anders;
 }
 
 <h2>Detaljer</h2>
@@ -12,27 +11,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CourseName)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CourseName)
+            @Html.DisplayFor(model => model.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CourseDescription)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CourseDescription)
+            @Html.DisplayFor(model => model.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CourseStartDate)
+            @Html.DisplayNameFor(model => model.StartDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CourseStartDate)
+            @Html.DisplayFor(model => model.StartDate)
         </dd>
 
     </dl>
