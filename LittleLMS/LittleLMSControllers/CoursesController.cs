@@ -21,7 +21,7 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         //public ActionResult Modules(int id) {
-        //    var modules = db.Modules.Where(m => m.Id == id).ToList();
+         //    var modules = db.Modules.Where(m => m.Id == id).ToList();
 
         //    return View(modules);
         //}
