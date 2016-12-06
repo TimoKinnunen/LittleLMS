@@ -10,7 +10,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Linq;
 
 
-    [Authorize(Roles = "Lärare")]
+    [Authorize(Roles = "Lärare, Elev")]
     public class ActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

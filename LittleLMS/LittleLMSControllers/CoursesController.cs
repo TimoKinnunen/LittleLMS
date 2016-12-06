@@ -4,20 +4,57 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace LittleLMS.LittleLMSControllers
-{
+namespace LittleLMS.LittleLMSControllers {
+    using Microsoft.AspNet.Identity.Owin;
     using System.Data.Entity;
     using System.Linq;
+    using System.Web;
 
     [Authorize(Roles = "Lärare,Elev")]
-    public class CoursesController : Controller
-    {
+    public class CoursesController : Controller {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public CoursesController() {
+        }
+
+        public CoursesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager {
+            get {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager {
+            get {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set {
+                _userManager = value;
+            }
+        }
         // GET: Courses
-        public async Task<ActionResult> Index()
-        {
+        public async Task<ActionResult> Index() {
+
+            if (User.IsInRole("Elev")) {
+                //var user = await UserManager.FindByIdAsync(model.Email);
+                return View(await db.Courses.Where(c => c.Id == 1).ToListAsync());
+            }
+
+            if (User.IsInRole("Lärare")) {
+                return View(await db.Courses.ToListAsync());
+            }
             return View(await db.Courses.ToListAsync());
+
         }
 
         //public ActionResult Modules(int id) {
@@ -27,16 +64,13 @@ namespace LittleLMS.LittleLMSControllers
         //}
 
         // GET: Courses/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<ActionResult> Details(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = await db.Courses.FindAsync(id);
 
-            if (course == null)
-            {
+            if (course == null) {
                 return HttpNotFound();
             }
 
@@ -66,8 +100,7 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Courses/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             return View();
         }
 
@@ -76,10 +109,8 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description,StartDate")] Course course)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description,StartDate")] Course course) {
+            if (ModelState.IsValid) {
                 db.Courses.Add(course);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -89,15 +120,12 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Courses/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<ActionResult> Edit(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = await db.Courses.FindAsync(id);
-            if (course == null)
-            {
+            if (course == null) {
                 return HttpNotFound();
             }
             return View(course);
@@ -108,10 +136,8 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Description,StartDate")] Course course)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Description,StartDate")] Course course) {
+            if (ModelState.IsValid) {
                 db.Entry(course).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -120,15 +146,12 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Courses/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<ActionResult> Delete(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = await db.Courses.FindAsync(id);
-            if (course == null)
-            {
+            if (course == null) {
                 return HttpNotFound();
             }
             return View(course);
@@ -137,18 +160,15 @@ namespace LittleLMS.LittleLMSControllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<ActionResult> DeleteConfirmed(int id) {
             Course course = await db.Courses.FindAsync(id);
             db.Courses.Remove(course);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 db.Dispose();
             }
             base.Dispose(disposing);

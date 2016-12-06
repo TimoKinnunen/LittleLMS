@@ -180,7 +180,7 @@ namespace LittleLMS.Migrations
                     Email = userName,
                     FirstName = "Göran",
                     LastName = "Persson",
-                    TimeOfRegistration = DateTime.Now,
+                    TimeOfRegistration = DateTime.Now
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
