@@ -188,7 +188,6 @@
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\Sparade controllers\xxApplicationUsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -286,11 +285,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\sparade views\ApplicationUsers\Create.cshtml" />
-    <Content Include="Views\sparade views\ApplicationUsers\Delete.cshtml" />
-    <Content Include="Views\sparade views\ApplicationUsers\Details.cshtml" />
-    <Content Include="Views\sparade views\ApplicationUsers\Edit.cshtml" />
-    <Content Include="Views\sparade views\ApplicationUsers\Index.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />

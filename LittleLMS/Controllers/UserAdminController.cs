@@ -164,6 +164,13 @@ namespace LittleLMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                //if (selectedRole == null || selectedRole.Count() > 1 || selectedRole.Count() == 0)
+                //{
+                //    ModelState.AddModelError("", "Välj rollen 'Elev' eller rollen 'Lärare'.");
+                //    ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                //    return View();
+                //}
+
                 var user = await UserManager.FindByIdAsync(editUser.Id);
                 if (user == null)
                 {
