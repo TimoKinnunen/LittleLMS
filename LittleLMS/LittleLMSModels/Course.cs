@@ -10,27 +10,27 @@ namespace LittleLMS.LittleLMSModels
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "Kursens namn")]
+        [Required(ErrorMessage = "Kursen måste ha ett namn!")]
+        [Display(Name = "Kursnamn")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Kursens beskrivning")]
+        [Required(ErrorMessage = "Kursen måste ha en beskrivning!")]
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Kursens start datum")]
+        [Required(ErrorMessage = "Kursen måste ha ett startdatum!")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         // navigation property
-        [Display(Name = "Kursens dokumenter")]
+        [Display(Name = "Dokument")]
         public virtual ICollection<Document> CourseDocuments { get; set; }
 
-        [Display(Name = "Kursens moduler")]
+        [Display(Name = "Moduler")]
         public virtual ICollection<Module> Modules { get; set; }
 
-        [Display(Name = "Kursens användare")]
+        [Display(Name = "Användare")]
         public virtual ICollection<ApplicationUser> Users { get; set; }
     }
 }

@@ -204,7 +204,6 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
-    <Compile Include="LittleLMSModels\Overview.cs" />
     <Compile Include="LittleLMSViewModels\ElevViewModel.cs" />
     <Compile Include="Migrations\201612031029220_Init.cs" />
     <Compile Include="Migrations\201612031029220_Init.Designer.cs">

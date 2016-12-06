@@ -12,31 +12,32 @@ namespace LittleLMS.LittleLMSModels
 
         public int CourseId { get; set; }
         [ForeignKey("CourseId")]
-        [Display(Name = "Kursens namn")]
         public virtual Course Course { get; set; }
 
-        [Required]
-        [Display(Name = "Modulens namn")]
+        [Required(ErrorMessage = "Modulen måste ha ett namn!")]
+        [Display(Name = "Modulnamn")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Modulens beskrivning")]
+ 
+        [Required(ErrorMessage = "Modulen måste ha en beskrivning!")]
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Modulens start datum")]
+        [Required(ErrorMessage = "Modulen måste ha ett startdatum!")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Modulens slut datum")]
-        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
+        [Display(Name = "Slutdatum")]
+        [Required(ErrorMessage = "Modulen måste ha ett slutdatum!")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
         public DateTime EndDate { get; set; }
 
         // navigation property
-        [Display(Name = "Modulens dokumenter")]
+        [Display(Name = "Dokument")]
         public virtual ICollection<Document> ModuleDocuments { get; set; }
 
-        [Display(Name = "Modulens aktiviteter")]
+        [Display(Name = "Aktiviteter")]
         public virtual ICollection<Activity> Activities { get; set; }
     }
 }

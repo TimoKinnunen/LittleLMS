@@ -11,23 +11,23 @@ namespace LittleLMS.LittleLMSModels
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "Dokumentets typ id")]
+        [Required(ErrorMessage = "Dokumentet måste ha en typ!")]
+        [Display(Name = "Dokumenttyp")]
         public int DocumentTypeId { get; set; }
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
 
-        [Required]
-        [Display(Name = "Dokumentets namn")]
+        [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
+        [Display(Name = "Dokumentnamn")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Dokumentets beskrivning")]
+        [Required(ErrorMessage = "Dokumentet måste ha en beskrivning!")]
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Dokumentets start datum")]
+        [Required(ErrorMessage = "Dokumentet måste ha ett datum!")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
+        [Display(Name = "Datum")]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Feedback")]
@@ -35,19 +35,19 @@ namespace LittleLMS.LittleLMSModels
 
 
         // navigation property
-        [Display(Name = "Dokumentets användare")]
+        [Display(Name = "Användare")]
         public virtual ICollection<ApplicationUser> DocumentApplicationUsers { get; set; }
 
         // navigation property
-        [Display(Name = "Dokumentets kurser")]
+        [Display(Name = "Kurser")]
         public virtual ICollection<Course> DocumentCourses { get; set; }
 
         // navigation property
-        [Display(Name = "Dokumentets mmoduler")]
+        [Display(Name = "Moduler")]
         public virtual ICollection<Module> DocumentModules { get; set; }
 
         // navigation property
-        [Display(Name = "Dokumentets aktiviteter")]
+        [Display(Name = "Aktiviteter")]
         public virtual ICollection<Activity> DocumentActivities { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace LittleLMS.LittleLMSModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Aktivitetens typ")]
-        public string Name { get; set; } = "E-learning";
+        [Display(Name = "Aktivitetstyp")]
+        public string Name { get; set; }
     }
 }
