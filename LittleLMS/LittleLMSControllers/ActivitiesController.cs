@@ -66,7 +66,8 @@ namespace LittleLMS.LittleLMSControllers
             {
                 db.Activities.Add(activity);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                int m_id = (int)activity.ModuleId;
+                return RedirectToAction("Index", new { id = m_id });
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
