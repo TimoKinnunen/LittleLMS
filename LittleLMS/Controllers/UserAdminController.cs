@@ -262,5 +262,10 @@ namespace LittleLMS.Controllers
             }
             return View();
         }
+
+        public async Task<ActionResult> Index2(int? courseId) {
+            var participants = UserManager.Users.Where(u => u.CourseId == courseId);
+            return View(await participants.ToListAsync());
+        }
     }
 }
