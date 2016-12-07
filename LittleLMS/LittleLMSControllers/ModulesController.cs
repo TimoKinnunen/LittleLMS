@@ -73,7 +73,8 @@ namespace LittleLMS.LittleLMSControllers
             {
                 db.Modules.Add(module);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", module.CourseId);
+                int c_id = (int)module.CourseId;
+                return RedirectToAction("Index", new { id = c_id });
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
@@ -107,7 +108,8 @@ namespace LittleLMS.LittleLMSControllers
             {
                 db.Entry(module).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                int c_id = (int)module.CourseId;
+                return RedirectToAction("Index", new { id = c_id });
             }
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);

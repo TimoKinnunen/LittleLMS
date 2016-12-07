@@ -1,4 +1,4 @@
-﻿@model LittleLMS.LittleLMSModels.Overview
+﻿@model LittleLMS.LittleLMSModels.Course
 
 @{
     ViewBag.Title = "Details";
@@ -35,44 +35,6 @@
         </dd>
 
     </dl>
-    <h4>Modul</h4>
-    <hr />
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ModuleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModuleDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModuleStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModuleEndDate)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in modules) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-            </tr>
-        }
-
-    </table>
-
 </div>
 <p>
     @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |

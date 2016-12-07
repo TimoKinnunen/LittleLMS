@@ -18,7 +18,7 @@ namespace LittleLMS.Migrations
 
         protected override void Seed(ApplicationDbContext context)
         {
-            
+
             context.ActivityTypes.AddOrUpdate(
                  p => p.Name,
                     new ActivityType { Name = "E-learning" },
@@ -50,45 +50,60 @@ namespace LittleLMS.Migrations
             context.SaveChanges();
 
             context.Modules.AddOrUpdate(
-          p => p.Name,
-            new Module { Name = "C#", Description = "Programmering i C#", StartDate = DateTime.Parse("2016-08-29"), EndDate = DateTime.Parse("2016-09-23"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id}, 
-            new Module { Name = "Webb", Description = "Grundläggande Webb-utveckling", StartDate = DateTime.Parse("2016-09-26"), EndDate = DateTime.Parse("2016-10-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
-            new Module { Name = "MVC", Description = "Introduktion till MVC", StartDate = DateTime.Parse("2016-10-10"), EndDate = DateTime.Parse("2016-10-21"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
-            new Module { Name = "Databaser", Description = "Grundläggande Databasmetodik", StartDate = DateTime.Parse("2016-10-24"), EndDate = DateTime.Parse("2016-10-28"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
-            new Module { Name = "App.Utv.", Description = "Introduktion till Applikationsutveckling", StartDate = DateTime.Parse("2016-10-31"), EndDate = DateTime.Parse("2016-11-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
-            new Module { Name = "Test", Description = "Introduktion till Applikationsutveckling", StartDate = DateTime.Parse("2016-11-08"), EndDate = DateTime.Parse("2016-11-14"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
-            new Module { Name = "Java 1", Description = "Java, Modul1", StartDate = DateTime.Parse("2016-08-29"), EndDate = DateTime.Parse("2016-09-23"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id },
-            new Module { Name = "Java 2", Description = "Java, Modul2", StartDate = DateTime.Parse("2016-09-26"), EndDate = DateTime.Parse("2016-10-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id },
-            new Module { Name = "Java 3", Description = "Java, Modul3", StartDate = DateTime.Parse("2016-10-10"), EndDate = DateTime.Parse("2016-10-21"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id }
-          );
+                p => p.Name,
+                new Module { Name = "C#", Description = "Programmering i C#", StartDate = DateTime.Parse("2016-08-29"), EndDate = DateTime.Parse("2016-09-23"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "Webb", Description = "Grundläggande Webb-utveckling", StartDate = DateTime.Parse("2016-09-26"), EndDate = DateTime.Parse("2016-10-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "MVC", Description = "Introduktion till MVC", StartDate = DateTime.Parse("2016-10-10"), EndDate = DateTime.Parse("2016-10-21"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "Databaser", Description = "Grundläggande Databasmetodik", StartDate = DateTime.Parse("2016-10-24"), EndDate = DateTime.Parse("2016-10-28"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "App.Utv.", Description = "Introduktion till Applikationsutveckling", StartDate = DateTime.Parse("2016-10-31"), EndDate = DateTime.Parse("2016-11-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "Test", Description = "Introduktion till Applikationsutveckling", StartDate = DateTime.Parse("2016-11-08"), EndDate = DateTime.Parse("2016-11-14"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, .net").Id },
+                new Module { Name = "Java 1", Description = "Java, Modul1", StartDate = DateTime.Parse("2016-08-29"), EndDate = DateTime.Parse("2016-09-23"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id },
+                new Module { Name = "Java 2", Description = "Java, Modul2", StartDate = DateTime.Parse("2016-09-26"), EndDate = DateTime.Parse("2016-10-07"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id },
+                new Module { Name = "Java 3", Description = "Java, Modul3", StartDate = DateTime.Parse("2016-10-10"), EndDate = DateTime.Parse("2016-10-21"), CourseId = context.Courses.FirstOrDefault(c => c.Name == "Systemutveckling, Java").Id }
+              );
             context.SaveChanges();
 
 
             context.Activities.AddOrUpdate(
             p => p.Name,
-            new Activity { Name = "E-L 1-3", Description = "C# E-learning 1-3", StartDate = DateTime.Parse("2016-08-29"),
+            new Activity
+            {
+                Name = "E-L 1-3",
+                Description = "C# E-learning 1-3",
+                StartDate = DateTime.Parse("2016-08-29"),
                 EndDate = DateTime.Parse("2016-08-29"),
                 ModuleId = context.Modules.FirstOrDefault(m => m.Name == "C#").Id,
-                ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "E-learning").Id},
-            new Activity { Name = "Frl C# Intro", Description = "Föreläsning 1, C# Intro", StartDate = DateTime.Parse("2016-08-30"),
+                ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "E-learning").Id
+            },
+            new Activity
+            {
+                Name = "Frl C# Intro",
+                Description = "Föreläsning 1, C# Intro",
+                StartDate = DateTime.Parse("2016-08-30"),
                 EndDate = DateTime.Parse("2016-08-30"),
                 ModuleId = context.Modules.FirstOrDefault(m => m.Name == "C#").Id,
                 ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "Föreläsning").Id
             },
-            new Activity { Name = "E-L 4", Description = "C# E-learning 4", StartDate = DateTime.Parse("2016-08-31"),
+            new Activity
+            {
+                Name = "E-L 4",
+                Description = "C# E-learning 4",
+                StartDate = DateTime.Parse("2016-08-31"),
                 EndDate = DateTime.Parse("2016-08-31"),
                 ModuleId = context.Modules.FirstOrDefault(m => m.Name == "C#").Id,
                 ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "E-learning").Id
             },
-                       new Activity {
-                           Name = "E-L 5 - 6",
-                           Description = "C# E-learning 1-3",
-                           StartDate = DateTime.Parse("2016-09-26"),
-                           EndDate = DateTime.Parse("2016-09-26"),
-                           ModuleId = context.Modules.FirstOrDefault(m => m.Name == "Webb").Id,
-                           ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "E-learning").Id
-                       },
-            new Activity {
+            new Activity
+            {
+                Name = "E-L 5 - 6",
+                Description = "C# E-learning 1-3",
+                StartDate = DateTime.Parse("2016-09-26"),
+                EndDate = DateTime.Parse("2016-09-26"),
+                ModuleId = context.Modules.FirstOrDefault(m => m.Name == "Webb").Id,
+                ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "E-learning").Id
+            },
+            new Activity
+            {
                 Name = "Frl Javascript",
                 Description = "Föreläsning 1, Javascript",
                 StartDate = DateTime.Parse("2016-10-03"),
@@ -96,7 +111,8 @@ namespace LittleLMS.Migrations
                 ModuleId = context.Modules.FirstOrDefault(m => m.Name == "Webb").Id,
                 ActivityTypeId = context.ActivityTypes.FirstOrDefault(a => a.Name == "Föreläsning").Id
             },
-            new Activity {
+            new Activity
+            {
                 Name = "Övning1",
                 Description = "C# Övning1",
                 StartDate = DateTime.Parse("2016-10-05"),
@@ -162,7 +178,7 @@ namespace LittleLMS.Migrations
                     LastName = "Hult",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
-                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, Java").Id
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 
                 IdentityResult userResult = userManager.Create(user, password);
@@ -184,7 +200,7 @@ namespace LittleLMS.Migrations
                     LastName = "Persson",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
-                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, Java").Id
+                    CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
 
                 };
 
