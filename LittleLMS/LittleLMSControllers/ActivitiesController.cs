@@ -24,7 +24,7 @@ namespace LittleLMS.LittleLMSControllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var activities = db.Activities.Where(a => a.Module.Id == moduleId);
+            var activities = db.Activities.Include(a => a.Module).Where(a => a.Module.Id == moduleId);
             if (activities == null) {
                 return HttpNotFound();
             }
