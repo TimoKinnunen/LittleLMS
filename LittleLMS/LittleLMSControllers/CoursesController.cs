@@ -4,9 +4,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace LittleLMS.LittleLMSControllers {
-    using Microsoft.AspNet.Identity.Owin;
+namespace LittleLMS.LittleLMSControllers
+{
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -46,14 +47,16 @@ namespace LittleLMS.LittleLMSControllers {
         // GET: Courses
         public async Task<ActionResult> Index() {
 
-            if (User.IsInRole("Elev")) {
+            if (User.IsInRole("Elev"))
+            {
                 var userId = User.Identity.GetUserId();
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
                 var courseId = user.CourseId;
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
 
-            if (User.IsInRole("Lärare")) {
+            if (User.IsInRole("Lärare"))
+            {
                 return View(await db.Courses.ToListAsync());
             }
             return View(await db.Courses.ToListAsync());
@@ -68,37 +71,15 @@ namespace LittleLMS.LittleLMSControllers {
 
         // GET: Courses/Details/5
         public async Task<ActionResult> Details(int? id) {
-            if (id == null) {
+            if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = await db.Courses.FindAsync(id);
-
-            if (course == null) {
+            if (course == null)
+            {
                 return HttpNotFound();
             }
-
-            //Module module = await db.Modules.FindAsync(id);
-            //if (module == null) {
-            //    return HttpNotFound();
-            //}
-
-            //var modules = db.Modules.Where(a => a.Id == course.Id).ToList();
-            //if (modules == null) {
-            //    return HttpNotFound();
-            //}
-            //ViewBag.Anders = modules;
-
-            //Overview overview = new Overview();
-            //overview.Id = course.Id;
-            //overview.CourseName = course.Name;
-            //overview.CourseDescription = course.Description;
-            //overview.CourseStartDate = course.StartDate;
-            //overview.ModuleName = module.Name;
-            //overview.ModuleDescription = module.Description;
-            //overview.ModuleStartDate = module.StartDate;
-            //overview.ModuleEndDate = module.EndDate;
-            //return View(overview);
-
             return View(course);
         }
 
