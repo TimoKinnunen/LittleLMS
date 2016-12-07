@@ -4,7 +4,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Moduler</h2>
+<h2>Kurs: @ViewBag.CourseName</h2>
+
+@*<h3>Kurs: @ViewBag.CourseName</h3>*@
 
 <p>
     @if (User.IsInRole("Lärare"))
@@ -14,9 +16,9 @@
 </p>
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Course.Name)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -35,9 +37,9 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Course.Name)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -54,8 +56,8 @@
                 @if (User.IsInRole("Lärare"))
                 {
                     @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) <span>|</span>
-                    @Html.ActionLink("Detaljer", "Details", new { id = item.Id }) <span>|</span>
-                    @Html.ActionLink("Ta bort", "Delete", new { id = item.Id }) <span>|</span>
+                    @Html.ActionLink("Aktiviteter", "Index", "Activities", new { id = item.Id }, null) <span>|</span>
+                    @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
                 }
                 @if (User.IsInRole("Elev"))
                 {
