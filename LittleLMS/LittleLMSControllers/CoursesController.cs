@@ -9,6 +9,7 @@ namespace LittleLMS.LittleLMSControllers
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -98,7 +99,44 @@ namespace LittleLMS.LittleLMSControllers
                     }
                 }
 
-                ViewBag.CourseStudentMates = await UserManager.Users.Where(u => u.CourseId == courseId).ToListAsync();
+                var roles = await RoleManager.Roles.ToListAsync();
+                var users = await UserManager.Users.ToListAsync();
+
+                var students = new List<ApplicationUser>();
+                var teachers = new List<ApplicationUser>();
+
+                foreach (var role in roles)
+                {
+                    if (role.Name == "Elev")
+                    {
+                        foreach (var applicationUser in users)
+                        {
+                            var userRoles = UserManager.GetRoles(applicationUser.Id);
+                            if (userRoles.Contains("Elev"))
+                            {
+                                students.Add(applicationUser);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (role.Name == "Lärare")
+                        {
+                            foreach (var applicationUser in users)
+                            {
+                                var userRoles = UserManager.GetRoles(applicationUser.Id);
+                                if (userRoles.Contains("Lärare"))
+                                {
+                                    teachers.Add(applicationUser);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ViewBag.CourseTeachers = teachers; // await UserManager.Users.Where(u => u.CourseId == courseId).ToListAsync();
+
+                ViewBag.CourseStudentMates = students; // await UserManager.Users.Where(u => u.CourseId == courseId).ToListAsync();
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }

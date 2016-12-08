@@ -120,6 +120,25 @@
 <table class="table">
     @if (User.IsInRole("Elev"))
     {
+        @Html.Label("Dina lärare:")
+
+        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseTeachers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<table class="table">
+    @if (User.IsInRole("Elev"))
+    {
         @Html.Label("Dina kurskamrater:")
 
         foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudentMates)
