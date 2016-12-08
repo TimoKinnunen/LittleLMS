@@ -8,6 +8,7 @@ namespace LittleLMS.LittleLMSControllers
 {
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
+    using System;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -17,28 +18,28 @@ namespace LittleLMS.LittleLMSControllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        private ApplicationSignInManager _signInManager;
+        private ApplicationRoleManager _roleManager;
         private ApplicationUserManager _userManager;
 
         public CoursesController()
         {
         }
 
-        public CoursesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public CoursesController(ApplicationUserManager userManager, ApplicationRoleManager signInManager)
         {
             UserManager = userManager;
-            SignInManager = signInManager;
+            RoleManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public ApplicationRoleManager RoleManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
             }
             private set
             {
-                _signInManager = value;
+                _roleManager = value;
             }
         }
 
@@ -53,21 +54,51 @@ namespace LittleLMS.LittleLMSControllers
                 _userManager = value;
             }
         }
-        // GET: Courses
-        public async Task<ActionResult> Index()
-        {
 
+        // GET: Courses
+        public async Task<ActionResult> Index(int? moduleId)
+        {
             if (User.IsInRole("Elev"))
             {
                 var userId = User.Identity.GetUserId();
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
                 var courseId = user.CourseId;
-
                 Course course = await db.Courses.FindAsync(courseId);
-                ViewBag.CourseName = course.Name;
-                ViewBag.CourseModules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
-                var firstModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
-                ViewBag.ModuleActivities = await db.Activities.Where(a => a.ModuleId == firstModule.Id).ToListAsync();
+                ViewBag.UserName = "Kursöversikt för eleven " + user.FullName + ".";
+                ViewBag.CourseName = "Kursnamn: " + course.Name;
+                ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar: " : "Kursen har startat: " + string.Format("{0:dd MMM yyyy}", course.StartDate); // course.StartDate;
+                var courseModules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
+                ViewBag.CourseModules = courseModules;
+                if (courseModules.Count == 0)
+                {
+                    ViewBag.CourseName = "Kurs: " + course.Name + " saknar moduler.";
+                }
+
+                if (moduleId.HasValue)
+                {
+                    var existingModule = await db.Modules.Where(m => m.Id == moduleId && m.CourseId == courseId).FirstOrDefaultAsync();
+                    ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
+                    var moduleActivities = await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync();
+                    ViewBag.ModuleActivities = moduleActivities;
+                    if (moduleActivities.Count == 0)
+                    {
+                        ViewBag.ModuleName = "Modulen: " + existingModule.Name + " saknar aktiviteter.";
+                    }
+                }
+                else
+                {
+                    var firstModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
+                    ViewBag.ModuleName = "Modul: " + firstModule.Name + ".";
+                    var moduleActivities = await db.Activities.Where(a => a.ModuleId == firstModule.Id).ToListAsync();
+                    ViewBag.ModuleActivities = moduleActivities;
+                    if (moduleActivities.Count == 0)
+                    {
+                        ViewBag.ModuleName = "Modulen: " + firstModule.Name + " saknar aktiviteter.";
+                    }
+                }
+
+                ViewBag.CourseStudentMates = await UserManager.Users.Where(u => u.CourseId == courseId).ToListAsync();
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
@@ -79,12 +110,6 @@ namespace LittleLMS.LittleLMSControllers
             return View(await db.Courses.ToListAsync());
 
         }
-
-        //public ActionResult Modules(int id) {
-        //    var modules = db.Modules.Where(m => m.Id == id).ToList();
-
-        //    return View(modules);
-        //}
 
         // GET: Courses/Details/5
         public async Task<ActionResult> Details(int? id)
