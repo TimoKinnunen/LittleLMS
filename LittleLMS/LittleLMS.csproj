@@ -193,6 +193,7 @@
     </Compile>
     <Compile Include="LittleLMSControllers\ActivitiesController.cs" />
     <Compile Include="LittleLMSControllers\ActivityTypesController.cs" />
+    <Compile Include="LittleLMSControllers\CourseParticipantsController.cs" />
     <Compile Include="LittleLMSControllers\CoursesController.cs" />
     <Compile Include="LittleLMSControllers\DocumentsController.cs" />
     <Compile Include="LittleLMSControllers\DocumentTypesController.cs" />
@@ -324,12 +325,11 @@
     <Content Include="Views\UsersAdmin\Details.cshtml" />
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
-    <Content Include="Views\UsersAdmin\Index2.cshtml" />
+    <Content Include="Views\CourseParticipants\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="EF Data Model\" />
-    <Folder Include="LittleLMSViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

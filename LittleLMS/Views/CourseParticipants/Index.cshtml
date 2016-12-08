@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<LittleLMS.Models.ApplicationUser>
 
 @{
-    ViewBag.Title = "Index2";
+    ViewBag.Title = "Index";
 }
+
+<h2>@ViewBag.WhichCourse</h2>
 
 <h2>Kursdeltagare</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Lägg till ny", "Create")
-</p>
+</p>*@
 <table class="table">
     <tr>
         <th>

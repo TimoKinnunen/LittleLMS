@@ -66,6 +66,8 @@ namespace LittleLMS.LittleLMSControllers
                 Course course = await db.Courses.FindAsync(courseId);
                 ViewBag.CourseName = course.Name;
                 ViewBag.CourseModules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
+                var firstModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
+                ViewBag.ModuleActivities = await db.Activities.Where(a => a.ModuleId == firstModule.Id).ToListAsync();
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
