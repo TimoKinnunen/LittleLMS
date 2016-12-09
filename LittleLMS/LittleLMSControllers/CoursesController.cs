@@ -57,7 +57,7 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Courses
-        public async Task<ActionResult> Index(int? studentModuleId, int? teacherCourseId, int? teacherModuleId)
+        public async Task<ActionResult> Index(int? studentModuleId)
         {
             if (User.IsInRole("Elev"))
             {
@@ -119,7 +119,6 @@ namespace LittleLMS.LittleLMSControllers
                 }
 
                 var students = new List<ApplicationUser>();
-                var teachers = new List<ApplicationUser>();
 
                 foreach (var applicationUser in await UserManager.Users.ToListAsync())
                 {
@@ -128,16 +127,7 @@ namespace LittleLMS.LittleLMSControllers
                     {
                         students.Add(applicationUser);
                     }
-                    else
-                    {
-                        if (userRoles.Contains("Lärare"))
-                        {
-                            teachers.Add(applicationUser);
-                        }
-                    }
                 }
-
-                ViewBag.CourseTeachers = teachers;
 
                 ViewBag.CourseStudentMates = students;
 
@@ -150,112 +140,10 @@ namespace LittleLMS.LittleLMSControllers
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
                 ViewBag.UserName = "Kursöversikt för läraren " + user.FullName + ".";
 
-                ViewBag.CourseModules = new List<Course>();
-                ViewBag.ModuleActivities = new List<Activity>();
-
-                Course course = await db.Courses.FirstAsync();
-                var courseId = course.Id;
-
-                var moduleId = 0;
-
-                if (teacherCourseId.HasValue)
-                {
-                    courseId = (int)teacherCourseId;
-                }
-                course = await db.Courses.FindAsync(courseId);
-                //var courseId = course.Id;
-
-
-                var firstModule = await db.Modules.FirstAsync();
-                if (firstModule != null)
-                {
-                    moduleId = firstModule.Id;
-                }
-
-                if (teacherModuleId.HasValue)
-                {
-                    moduleId = (int)teacherModuleId;
-                }
-
-                if (studentModuleId.HasValue)
-                {
-                    moduleId = (int)studentModuleId;
-                }
-
-                ViewBag.CourseName = "Kursnamn: " + course.Name;
-                ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar: " : "Kursen har startat: " + string.Format("{0:dd MMM yyyy}", course.StartDate); // course.StartDate;
-                var courseModules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
-                ViewBag.CourseModules = courseModules;
-                if (courseModules == null)
-                {
-                    ViewBag.CourseName = "Kurs saknar moduler.";
-                }
-
-                if (teacherModuleId.HasValue)
-                {
-                    var existingModule = await db.Modules.Where(m => m.Id == moduleId && m.CourseId == courseId).FirstOrDefaultAsync();
-                    if (existingModule != null)
-                    {
-                        ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
-                    }
-                    else
-                    {
-                        ViewBag.ModuleName = "Modul saknas.";
-                    }
-                    var moduleActivities = await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync();
-                    ViewBag.ModuleActivities = moduleActivities;
-                    if (moduleActivities == null)
-                    {
-                        ViewBag.ModuleName = "Modulen saknar aktiviteter.";
-                    }
-                }
-                else
-                {
-                    var existingModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
-                    if (existingModule != null)
-                    {
-                        ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
-                        var moduleActivities = await db.Activities.Where(a => a.ModuleId == existingModule.Id).ToListAsync();
-                        ViewBag.ModuleActivities = moduleActivities;
-                        if (moduleActivities == null)
-                        {
-                            ViewBag.ModuleName = "Modulen saknar aktiviteter.";
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.ModuleName = "Modulen saknar aktiviteter.";
-                    }
-                }
-
-                var students = new List<ApplicationUser>();
-                var teachers = new List<ApplicationUser>();
-
-                foreach (var applicationUser in await UserManager.Users.ToListAsync())
-                {
-                    var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
-                    if (userRoles.Contains("Elev"))
-                    {
-                        students.Add(applicationUser);
-                    }
-                    else
-                    {
-                        if (userRoles.Contains("Lärare"))
-                        {
-                            teachers.Add(applicationUser);
-                        }
-                    }
-                }
-
-                ViewBag.CourseTeachers = teachers;
-
-                ViewBag.CourseStudentMates = students;
-
                 return View(await db.Courses.ToListAsync());
             }
-            return View(await db.Courses.ToListAsync());
 
+            return View(await db.Courses.ToListAsync());
         }
 
         // GET: Courses/Details/5

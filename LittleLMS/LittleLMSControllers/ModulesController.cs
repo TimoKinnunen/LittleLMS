@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
 
@@ -15,30 +16,49 @@ namespace LittleLMS.LittleLMSControllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Modules
-        public async Task<ActionResult> Index(int? id)
+        public async Task<ActionResult> Index(int? courseIdFromCourses, int? moduleId)
         {
-            int courseId = (int)id;
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (courseIdFromCourses.HasValue)
+            {
+                var courseId = (int)courseIdFromCourses;
+
+                var modules = db.Modules.Where(m => m.Course.Id == courseId);
+
+                var course = db.Courses.FirstOrDefault(m => m.Id == courseId);
+                ViewBag.CourseName = course.Name;
+
+                var moduleActivities = new List<Activity>();
+                if (moduleId.HasValue)
+                {
+                    moduleActivities = await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync();
+                }
+                else
+                {
+                    var existingModule = await db.Modules.Where(m => m.Course.Id == courseId).FirstOrDefaultAsync();
+                    if (existingModule != null)
+                    {
+                        ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
+                        moduleActivities = await db.Activities.Where(a => a.ModuleId == existingModule.Id).ToListAsync();
+                    }
+                    else
+                    {
+                        ViewBag.ModuleName = "Modul saknas.";
+                    }
+                }
+
+                ViewBag.ModuleActivities = moduleActivities;
+                if (moduleActivities == null)
+                {
+                    ViewBag.ModuleName = "Modulen saknar aktiviteter.";
+                }
+
+                return View(await modules.ToListAsync());
             }
-
-            var modules = db.Modules.Where(m => m.Course.Id == courseId);
-
-            if (modules == null) {
-                return HttpNotFound();
+            else
+            {
+                return View(await db.Modules.ToListAsync());
             }
-
-            var x = db.Courses.FirstOrDefault(m => m.Id == id);
-            ViewBag.CourseName = x.Name;
-
-            return View(await modules.ToListAsync());
         }
-
-        //public ActionResult Moduler(int id) {
-        //    var moduler = db.Modules.Where(m => m.Id == id).ToList();
-
-        //    return View(moduler);
-        //}
 
         // GET: Modules/Details/5
         public async Task<ActionResult> Details(int? id)
