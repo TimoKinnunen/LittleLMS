@@ -148,7 +148,7 @@ namespace LittleLMS.Migrations
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)
             {
-                user = new ApplicationUser()
+                user = new ApplicationUser
                 {
                     UserName = userName,
                     Email = userName,
@@ -171,7 +171,7 @@ namespace LittleLMS.Migrations
             user = userManager.FindByName(userName);
             if (user == null)
             {
-                user = new ApplicationUser()
+                user = new ApplicationUser
                 {
                     UserName = userName,
                     Email = userName,
@@ -194,7 +194,7 @@ namespace LittleLMS.Migrations
             user = userManager.FindByName(userName);
             if (user == null)
             {
-                user = new ApplicationUser()
+                user = new ApplicationUser
                 {
                     UserName = userName,
                     Email = userName,
@@ -218,7 +218,7 @@ namespace LittleLMS.Migrations
             user = userManager.FindByName(userName);
             if (user == null)
             {
-                user = new ApplicationUser()
+                user = new ApplicationUser
                 {
                     UserName = userName,
                     Email = userName,

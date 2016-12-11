@@ -3,7 +3,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Lägg till användare</h2>
+<h2>Lägg till lärare</h2>
 
 @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -42,7 +42,7 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         <label class="col-md-2 control-label">
             Välj användarens roll
         </label>
@@ -53,13 +53,17 @@
                 @Html.Label(item.Value, new { @class = "control-label" })
             }
         </div>
-    </div>
+    </div>*@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default" value="Lägg till" />
         </div>
     </div>
 }
+
+<div>
+    @Html.ActionLink("Tillbaka till listan", "Index")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

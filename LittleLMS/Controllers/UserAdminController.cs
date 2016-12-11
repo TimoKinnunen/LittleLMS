@@ -76,7 +76,7 @@ namespace LittleLMS.Controllers
         public async Task<ActionResult> Create()
         {
             //Get the list of Roles
-            ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+            //ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
 
             return View();
         }
@@ -88,36 +88,47 @@ namespace LittleLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (selectedRoles == null || selectedRoles.Count() > 1 || selectedRoles.Count() == 0)
+                //if (selectedRoles == null || selectedRoles.Count() > 1 || selectedRoles.Count() == 0)
+                //{
+                //    ModelState.AddModelError("", "Välj rollen 'Elev' eller rollen 'Lärare'.");
+                //    ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                //    return View();
+                //}
+                string roleNameLärare = "Lärare";
+                var user = new ApplicationUser
                 {
-                    ModelState.AddModelError("", "Välj rollen 'Elev' eller rollen 'Lärare'.");
-                    ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                    UserName = userViewModel.Email,
+                    Email = userViewModel.Email,
+                    FirstName = userViewModel.FirstName,
+                    LastName = userViewModel.LastName,
+                    TimeOfRegistration = DateTime.Now,
+                    EmailConfirmed = true
+                };
+                user.TimeOfRegistration = DateTime.Now;
+
+                //Add Lärare
+                var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
+                if (!adminresult.Succeeded)
+                {
+                    ModelState.AddModelError("", adminresult.Errors.First());
+                    //ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
                     return View();
                 }
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName };
-                user.TimeOfRegistration = DateTime.Now;
-                var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
-                //Add User to the selected Roles 
+                //Add Lärare to the selected Role
                 if (adminresult.Succeeded)
                 {
-                    if (selectedRoles != null)
-                    {
-                        var result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
+                    //if (selectedRoles != null)
+                    //{
+                        //var result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
+                        var result = await UserManager.AddToRolesAsync(user.Id, roleNameLärare);
                         if (!result.Succeeded)
                         {
                             ModelState.AddModelError("", result.Errors.First());
-                            ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                            //ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
                             return View();
                         }
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", adminresult.Errors.First());
-                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                    return View();
-
+                    //}
                 }
                 return RedirectToAction("Index");
             }

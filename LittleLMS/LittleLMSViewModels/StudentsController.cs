@@ -112,8 +112,8 @@ namespace LittleLMS.LittleLMSViewModels
             if (ModelState.IsValid)
             {
                 string userName = student.Email;
-                string password = "Lexicon01!";
                 string roleNameElev = "Elev";
+                string password = "Lexicon01!"; // alla elever får läsenordet Lexicon01!
 
                 var user = new ApplicationUser
                 {
@@ -121,11 +121,25 @@ namespace LittleLMS.LittleLMSViewModels
                     Email = student.Email,
                     FirstName = student.FirstName,
                     LastName = student.LastName,
-                    CourseId=student.CourseId,
+                    CourseId = student.CourseId,
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true
                 };
+
+                //Add User
                 var userResult = await UserManager.CreateAsync(user, password);
+                if (!userResult.Succeeded)
+                {
+                    ModelState.AddModelError("", userResult.Errors.First());
+                    Student newStudent = new Student
+                    {
+                        FirstName = "Förnamn",
+                        LastName = "Efternamn",
+                        Email = "fornman.efternamn@lexicon.se",
+                        CourseId = student.CourseId
+                    };
+                    return View(newStudent);
+                }
 
                 //Add User to the selected Role
                 if (userResult.Succeeded)
@@ -133,6 +147,15 @@ namespace LittleLMS.LittleLMSViewModels
                     var result = await UserManager.AddToRolesAsync(user.Id, roleNameElev);
                     if (!result.Succeeded)
                     {
+                        ModelState.AddModelError("", result.Errors.First());
+                        Student newStudent = new Student
+                        {
+                            FirstName = "Förnamn",
+                            LastName = "Efternamn",
+                            Email = "fornman.efternamn@lexicon.se",
+                            CourseId = student.CourseId
+                        };
+                        return View(newStudent);
                     }
                 }
                 return RedirectToAction("Index", "Courses");
