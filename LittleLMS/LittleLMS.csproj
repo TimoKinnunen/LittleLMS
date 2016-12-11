@@ -204,6 +204,8 @@
     <Compile Include="LittleLMSModels\Document.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
+    <Compile Include="LittleLMSViewModels\Student.cs" />
+    <Compile Include="LittleLMSViewModels\StudentsController.cs" />
     <Compile Include="Migrations\201612071213018_Init.cs" />
     <Compile Include="Migrations\201612071213018_Init.Designer.cs">
       <DependentUpon>201612071213018_Init.cs</DependentUpon>
@@ -326,6 +328,11 @@
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
     <Content Include="Views\CourseParticipants\Index.cshtml" />
+    <Content Include="Views\Students\Create.cshtml" />
+    <Content Include="Views\Students\Delete.cshtml" />
+    <Content Include="Views\Students\Details.cshtml" />
+    <Content Include="Views\Students\Edit.cshtml" />
+    <Content Include="Views\Students\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

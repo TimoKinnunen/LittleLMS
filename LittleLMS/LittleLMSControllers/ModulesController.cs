@@ -6,58 +6,89 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Web;
 
-    [Authorize(Roles = "Lärare,Elev")]
+    [Authorize(Roles = "Lärare")]
     public class ModulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Modules
-        public async Task<ActionResult> Index(int? courseIdFromCourses, int? moduleId)
+        private ApplicationRoleManager _roleManager;
+        private ApplicationUserManager _userManager;
+
+        public ModulesController()
         {
-            if (courseIdFromCourses.HasValue)
+        }
+
+        public ModulesController(ApplicationUserManager userManager, ApplicationRoleManager signInManager)
+        {
+            UserManager = userManager;
+            RoleManager = signInManager;
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
             {
-                var courseId = (int)courseIdFromCourses;
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
 
-                var modules = db.Modules.Where(m => m.Course.Id == courseId);
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
-                var course = db.Courses.FirstOrDefault(m => m.Id == courseId);
-                ViewBag.CourseName = course.Name;
+        // GET: Modules
+        public async Task<ActionResult> Index(int? courseId)
+        {
+            ViewBag.CourseModules = new List<Module>();
+            ViewBag.CourseModulesMessage = "Kursen saknar moduler.";
 
-                var moduleActivities = new List<Activity>();
-                if (moduleId.HasValue)
+            if (User.IsInRole("Lärare"))
+            {
+                var userId = User.Identity.GetUserId();
+                ApplicationUser user = await UserManager.FindByIdAsync(userId);
+                ViewBag.UserName = "Lärare " + user.FullName + ". Du kan lägga till och redigera moduler.";
+
+                // läraren använder inte fältet CourseId och vi mellanlagrar där courseId
+                if (courseId == null)
                 {
-                    moduleActivities = await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync();
+                    courseId = user.CourseId;
                 }
                 else
                 {
-                    var existingModule = await db.Modules.Where(m => m.Course.Id == courseId).FirstOrDefaultAsync();
-                    if (existingModule != null)
-                    {
-                        ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
-                        moduleActivities = await db.Activities.Where(a => a.ModuleId == existingModule.Id).ToListAsync();
-                    }
-                    else
-                    {
-                        ViewBag.ModuleName = "Modul saknas.";
-                    }
+                    user.CourseId = courseId;
                 }
 
-                ViewBag.ModuleActivities = moduleActivities;
-                if (moduleActivities == null)
-                {
-                    ViewBag.ModuleName = "Modulen saknar aktiviteter.";
-                }
+                #region course
+                Course course = await db.Courses.FindAsync(courseId);
+                ViewBag.CourseName = "Kursnamn: " + course.Name;
+                ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                #endregion course
 
-                return View(await modules.ToListAsync());
+                return View(await db.Modules.Where(m => m.CourseId == courseId).ToListAsync());
             }
-            else
-            {
-                return View(await db.Modules.ToListAsync());
-            }
+
+            return View(await db.Modules.ToListAsync());
         }
 
         // GET: Modules/Details/5
@@ -166,6 +197,17 @@ namespace LittleLMS.LittleLMSControllers
             if (disposing)
             {
                 db.Dispose();
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
+                }
+
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
             }
             base.Dispose(disposing);
         }

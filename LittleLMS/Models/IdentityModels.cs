@@ -1,4 +1,5 @@
 ﻿using LittleLMS.LittleLMSModels;
+using LittleLMS.LittleLMSViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -78,6 +79,5 @@ namespace LittleLMS.Models
         public DbSet<Document> Documents { get; set; }
 
         public DbSet<DocumentType> DocumentTypes { get; set; }
-
     }
 }

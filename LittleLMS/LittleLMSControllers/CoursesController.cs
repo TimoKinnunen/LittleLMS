@@ -57,67 +57,65 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Courses
-        public async Task<ActionResult> Index(int? studentModuleId)
+        public async Task<ActionResult> Index(int? moduleId)
         {
+            ViewBag.CourseModules = new List<Module>();
+            ViewBag.ModuleActivities = new List<Activity>();
+            ViewBag.CourseStudents = new List<ApplicationUser>();
+            ViewBag.CourseModulesMessage = "Kursen saknar moduler.";
+            ViewBag.ModuleActivitiesMessage = "Modulen saknar aktiviteter.";
+            ViewBag.CourseStudentsMessage = "Kurs saknar deltagare.";
+
             if (User.IsInRole("Elev"))
             {
                 var userId = User.Identity.GetUserId();
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
                 ViewBag.UserName = "Kursöversikt för eleven " + user.FullName + ".";
 
-                ViewBag.CourseModules = new List<Course>();
-                ViewBag.ModuleActivities = new List<Activity>();
-
                 var courseId = user.CourseId;
+                if (courseId == null)
+                {
+                    ModelState.AddModelError("", "Eleven " + user.Email + " är inte kopplad till en kurs.");
+                    return View();
+                }
+
+                #region course
                 Course course = await db.Courses.FindAsync(courseId);
                 ViewBag.CourseName = "Kursnamn: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar: " : "Kursen har startat: " + string.Format("{0:dd MMM yyyy}", course.StartDate); // course.StartDate;
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                #endregion course
+
+                #region module
+                Module existingModule = null;
                 var courseModules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
-                ViewBag.CourseModules = courseModules;
-                if (courseModules == null)
+                if (courseModules.Count > 0)
                 {
-                    ViewBag.CourseName = "Kurs saknar moduler.";
-                }
+                    ViewBag.CourseModules = courseModules;
+                    ViewBag.CourseModulesMessage = string.Empty;
 
-                ViewBag.ModuleActivities = new List<Activity>();
-                if (studentModuleId.HasValue)
-                {
-                    var existingModule = await db.Modules.Where(m => m.Id == studentModuleId && m.CourseId == courseId).FirstOrDefaultAsync();
-                    if (existingModule != null)
+                    if (moduleId.HasValue)
                     {
-                        ViewBag.ModuleName = "Modul: " + existingModule.Name + ".";
+                        existingModule = await db.Modules.Where(m => m.Id == moduleId && m.CourseId == courseId).FirstOrDefaultAsync();
                     }
                     else
                     {
-                        ViewBag.ModuleName = "Modul saknas.";
-                    }
-                    var moduleActivities = await db.Activities.Where(a => a.ModuleId == studentModuleId).ToListAsync();
-                    ViewBag.ModuleActivities = moduleActivities;
-                    if (moduleActivities == null)
-                    {
-                        ViewBag.ModuleName = "Modulen saknar aktiviteter.";
+                        existingModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
                     }
                 }
-                else
+
+                if (existingModule != null)
                 {
-                    var firstModule = await db.Modules.Where(m => m.CourseId == courseId).FirstOrDefaultAsync();
-                    if (firstModule != null)
+                    var moduleActivities = await db.Activities.Where(a => a.ModuleId == existingModule.Id).ToListAsync();
+                    if (moduleActivities.Count > 0)
                     {
-                        ViewBag.ModuleName = "Modul: " + firstModule.Name + ".";
-                        var moduleActivities = await db.Activities.Where(a => a.ModuleId == firstModule.Id).ToListAsync();
                         ViewBag.ModuleActivities = moduleActivities;
-                        if (moduleActivities == null)
-                        {
-                            ViewBag.ModuleName = "Modulen saknar aktiviteter.";
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.ModuleName = "Modulen: saknar aktiviteter.";
+                        ViewBag.ModuleActivitiesMessage = "Modulens namn: " + existingModule.Name + ".";
                     }
                 }
+                #endregion module
 
+                #region students
                 var students = new List<ApplicationUser>();
 
                 foreach (var applicationUser in await UserManager.Users.ToListAsync())
@@ -129,7 +127,9 @@ namespace LittleLMS.LittleLMSControllers
                     }
                 }
 
-                ViewBag.CourseStudentMates = students;
+                ViewBag.CourseStudents = students;
+                ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
+                #endregion students
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
@@ -138,7 +138,23 @@ namespace LittleLMS.LittleLMSControllers
             {
                 var userId = User.Identity.GetUserId();
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
-                ViewBag.UserName = "Kursöversikt för läraren " + user.FullName + ".";
+                ViewBag.UserName = "Lärare " + user.FullName + ". Du kan lägga till och redigera kurser.";
+
+                #region students
+                var students = new List<ApplicationUser>();
+
+                foreach (var applicationUser in await UserManager.Users.ToListAsync())
+                {
+                    var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                    if (userRoles.Contains("Elev"))
+                    {
+                        students.Add(applicationUser);
+                    }
+                }
+
+                ViewBag.CourseStudents = students;
+                ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
+                #endregion students
 
                 return View(await db.Courses.ToListAsync());
             }
@@ -246,6 +262,17 @@ namespace LittleLMS.LittleLMSControllers
             if (disposing)
             {
                 db.Dispose();
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
+                }
+
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
             }
             base.Dispose(disposing);
         }

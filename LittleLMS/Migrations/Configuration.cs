@@ -156,6 +156,7 @@ namespace LittleLMS.Migrations
                     LastName = "Larsson",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
+                    LockoutEnabled = false,
                     CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 
@@ -178,6 +179,7 @@ namespace LittleLMS.Migrations
                     LastName = "Hult",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
+                    LockoutEnabled = false,
                     CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 
@@ -200,6 +202,7 @@ namespace LittleLMS.Migrations
                     LastName = "Persson",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
+                    LockoutEnabled = false,
                     CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
 
                 };
@@ -223,6 +226,7 @@ namespace LittleLMS.Migrations
                     LastName = "Kavat",
                     TimeOfRegistration = DateTime.Now,
                     EmailConfirmed = true,
+                    LockoutEnabled = false,
                     CourseId = context.Courses.FirstOrDefault(a => a.Name == "Systemutveckling, .net").Id
                 };
 

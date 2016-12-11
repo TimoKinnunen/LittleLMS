@@ -6,30 +6,84 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Web;
 
-
-    [Authorize(Roles = "Lärare, Elev")]
+    [Authorize(Roles = "Lärare")]
     public class ActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Activities
-        public async Task<ActionResult> Index(int? id)
+        private ApplicationRoleManager _roleManager;
+        private ApplicationUserManager _userManager;
+
+        public ActivitiesController()
         {
-            //var activities = db.Activities.Include(a => a.ActivityType).Include(a => a.Module);
-            int moduleId = (int)id;
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        public ActivitiesController(ApplicationUserManager userManager, ApplicationRoleManager signInManager)
+        {
+            UserManager = userManager;
+            RoleManager = signInManager;
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        // GET: Activities
+        public async Task<ActionResult> Index(int? moduleId)
+        {
+            if (User.IsInRole("Lärare"))
+            {
+                var userId = User.Identity.GetUserId();
+                ApplicationUser user = await UserManager.FindByIdAsync(userId);
+                ViewBag.UserName = "Lärare " + user.FullName + ". Du kan lägga till och redigera aktiviteter.";
+
+                Module module = await db.Modules.FindAsync(moduleId);
+
+                #region course
+                Course course = await db.Courses.FindAsync(module.Course.Id);
+                ViewBag.CourseName = "Kursnamn: " + course.Name;
+                ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                #endregion course
+
+                #region module
+                ViewBag.ModuleName = "Modulnamn: " + module.Name;
+                ViewBag.ModuleDescription = "Modulbeskrivning: " + module.Description;
+                ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                #endregion module
+
+                return View(await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync());
             }
 
-            var activities = db.Activities.Include(a => a.Module).Where(a => a.Module.Id == moduleId);
-            if (activities == null) {
-                return HttpNotFound();
-            }
-
-            return View(await activities.ToListAsync());
+            return View(await db.Activities.ToListAsync());
         }
 
         // GET: Activities/Details/5
@@ -141,6 +195,17 @@ namespace LittleLMS.LittleLMSControllers
             if (disposing)
             {
                 db.Dispose();
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
+                }
+
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
             }
             base.Dispose(disposing);
         }

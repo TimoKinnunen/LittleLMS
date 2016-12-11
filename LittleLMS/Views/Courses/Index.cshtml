@@ -8,6 +8,9 @@
 {
     <h2>Kurser</h2>
     <h6>@ViewBag.UserName</h6>
+    <p>
+        @Html.ActionLink("Lägg till ny kurs", "Create")
+    </p>
     <h2>@ViewBag.CourseName</h2>
     <h4>@ViewBag.CourseDescription</h4>
     <h4>@ViewBag.CourseInterval</h4>
@@ -21,12 +24,8 @@
     <h4>@ViewBag.CourseInterval</h4>
 }
 
-<p>
-    @if (User.IsInRole("Lärare"))
-    {
-        @Html.ActionLink("Lägg till ny", "Create")
-    }
-</p>
+@Html.ValidationSummary("", new { @class = "text-error" })
+
 <table class="table">
     @if (User.IsInRole("Lärare"))
     {
@@ -56,7 +55,8 @@
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Kursöversikt", "Index", "Modules", new { courseIdFromCourses = item.Id }, null) |
+                    @Html.ActionLink("Lägg till elev", "Create", "Students", new { courseId = item.Id }, null) |
+                    @Html.ActionLink("Moduler", "Index", "Modules", new { courseId = item.Id }, null) |
                     @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Ta bort", "Delete", new { id = item.Id }) |
                 </td>
@@ -68,9 +68,7 @@
 <table class="table">
     @if (User.IsInRole("Elev"))
     {
-        @Html.Label("Kursens moduler:")
-        <tr> @ViewBag.CourseName</tr>
-
+        <caption>@Html.Label("Kursens moduler:")<br />@ViewBag.CourseModulesMessage</caption>
         foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Module>)ViewBag.CourseModules)
         {
             <tr>
@@ -87,7 +85,7 @@
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Aktiviteter", "Index", new { studentModuleId = item.Id })
+                    @Html.ActionLink("Aktiviteter", "Index", new { moduleId = item.Id })
                 </td>
             </tr>
         }
@@ -97,9 +95,7 @@
 <table class="table">
     @if (User.IsInRole("Elev"))
     {
-        @Html.Label("Modulens aktiviteter:")
-        <tr> @ViewBag.ModuleName</tr>
-
+        <caption>@Html.Label("Modulens aktiviteter:")<br />@ViewBag.ModuleActivitiesMessage</caption>
         foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Activity>)ViewBag.ModuleActivities)
         {
             <tr>
@@ -121,11 +117,10 @@
 </table>
 
 <table class="table">
-    @if (User.IsInRole("Elev"))
+    @if (User.IsInRole("Elev") || User.IsInRole("Lärare"))
     {
-        @Html.Label("Dina kurskamrater:")
-
-        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudentMates)
+        <caption>@Html.Label("Elever:")<br />@ViewBag.CourseStudentsMessage</caption>
+        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudents)
         {
             <tr>
                 <td>
