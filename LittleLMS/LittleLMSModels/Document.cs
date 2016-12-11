@@ -19,20 +19,29 @@ namespace LittleLMS.LittleLMSModels
 
         [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
         [Display(Name = "Dokumentnamn")]
+        [StringLength(255)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha en beskrivning!")]
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Dokumentet måste ha ett datum!")]
+        [Required(ErrorMessage = "Dokumentet måste ha uppladdad av!")]
+        [Display(Name = "Uppladdad av")]
+        public string UploadedBy { get; set; }
+
+        [Required(ErrorMessage = "Dokumentet måste ha ett registreringsdatum!")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
-        [Display(Name = "Datum")]
-        public DateTime StartDate { get; set; }
+        [Display(Name = "Registreringsdatum")]
+        public DateTime TimeOfRegistration { get; set; }
+
+        [StringLength(100)]
+        public string ContentType { get; set; }
+
+        public byte[] Content { get; set; }
 
         [Display(Name = "Feedback")]
         public string FeedbackFromTeacherToStudent { get; set; }
-
 
         // navigation property
         [Display(Name = "Användare")]

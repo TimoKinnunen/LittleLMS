@@ -31,9 +31,12 @@ namespace LittleLMS.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DocumentTypeId = c.Int(nullable: false),
-                        Name = c.String(nullable: false),
+                        Name = c.String(nullable: false, maxLength: 255),
                         Description = c.String(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
+                        UploadedBy = c.String(nullable: false),
+                        TimeOfRegistration = c.DateTime(nullable: false),
+                        ContentType = c.String(maxLength: 100),
+                        Content = c.Binary(),
                         FeedbackFromTeacherToStudent = c.String(),
                     })
                 .PrimaryKey(t => t.Id)

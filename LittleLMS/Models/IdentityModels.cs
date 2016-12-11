@@ -1,5 +1,4 @@
 ﻿using LittleLMS.LittleLMSModels;
-using LittleLMS.LittleLMSViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;

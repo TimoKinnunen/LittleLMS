@@ -13,7 +13,7 @@ namespace LittleLMS.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201612071213018_Init"; }
+            get { return "201612111845160_Init"; }
         }
         
         string IMigrationMetadata.Source

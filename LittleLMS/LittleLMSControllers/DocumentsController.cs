@@ -6,18 +6,60 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using LittleLMSViewModels;
+    using Microsoft.AspNet.Identity.Owin;
+    using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
 
-    // [Authorize(Roles = "Lärare,Elev")]
     public class DocumentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        private ApplicationRoleManager _roleManager;
+        private ApplicationUserManager _userManager;
+
+        public DocumentsController()
+        {
+        }
+
+        public DocumentsController(ApplicationUserManager userManager, ApplicationRoleManager signInManager)
+        {
+            UserManager = userManager;
+            RoleManager = signInManager;
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         // GET: Documents
         public async Task<ActionResult> Index()
         {
-            var documents = db.Documents.Include(d => d.DocumentType);
-            return View(await documents.ToListAsync());
+            return View(await db.Documents.ToListAsync());
         }
 
         // GET: Documents/Details/5
@@ -45,15 +87,51 @@ namespace LittleLMS.LittleLMSControllers
         // POST: Documents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,DocumentTypeId,Name,Description,StartDate,FeedbackFromTeacherToStudent")] Document document)
+        public async Task<ActionResult> Create([Bind(Include = "Id,DocumentTypeId,Name,Description,UploadedBy,TimeOfRegistration,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Documents.Add(document);
-                await db.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    if (upload != null && upload.ContentLength > 0)
+                    {
+                        Document dokumentToUpload = new Document
+                        {
+                            DocumentTypeId = document.DocumentTypeId,
+                            Name = Path.GetFileName(upload.FileName),
+                            Description = document.Description,
+                            UploadedBy = document.UploadedBy,
+                            TimeOfRegistration = DateTime.Now,
+                            ContentType = upload.ContentType,
+                            FeedbackFromTeacherToStudent = String.Empty
+                        };
+
+                        using (var reader = new BinaryReader(upload.InputStream))
+                        {
+                            dokumentToUpload.Content = reader.ReadBytes(upload.ContentLength);
+                        }
+
+                        //var user = await UserManager.FindByEmailAsync("stina.larsson@lexicon.se");
+                        //if (user != null)
+                        //{
+                        //    user.UserDocuments.Add(dokumentToUpload);
+                        //}
+
+                        db.Documents.Add(dokumentToUpload);
+                        await db.SaveChangesAsync();
+                    }
+                }
+
                 return RedirectToAction("Index");
+
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
@@ -81,7 +159,7 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,Name,Description,StartDate,FeedbackFromTeacherToStudent")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,Name,Description,UploadedBy,TimeOfRegistration,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
         {
             if (ModelState.IsValid)
             {
@@ -124,6 +202,17 @@ namespace LittleLMS.LittleLMSControllers
             if (disposing)
             {
                 db.Dispose();
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
+                }
+
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
             }
             base.Dispose(disposing);
         }

@@ -206,9 +206,9 @@
     <Compile Include="LittleLMSModels\Module.cs" />
     <Compile Include="LittleLMSViewModels\Student.cs" />
     <Compile Include="LittleLMSViewModels\StudentsController.cs" />
-    <Compile Include="Migrations\201612071213018_Init.cs" />
-    <Compile Include="Migrations\201612071213018_Init.Designer.cs">
-      <DependentUpon>201612071213018_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201612111845160_Init.cs" />
+    <Compile Include="Migrations\201612111845160_Init.Designer.cs">
+      <DependentUpon>201612111845160_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -302,11 +302,6 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Documents\Create.cshtml" />
-    <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\Details.cshtml" />
-    <Content Include="Views\Documents\Edit.cshtml" />
-    <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\DocumentTypes\Create.cshtml" />
     <Content Include="Views\DocumentTypes\Delete.cshtml" />
     <Content Include="Views\DocumentTypes\Details.cshtml" />
@@ -333,6 +328,11 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
+    <Content Include="Views\Documents\Create.cshtml" />
+    <Content Include="Views\Documents\Delete.cshtml" />
+    <Content Include="Views\Documents\Details.cshtml" />
+    <Content Include="Views\Documents\Edit.cshtml" />
+    <Content Include="Views\Documents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -348,8 +348,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612071213018_Init.resx">
-      <DependentUpon>201612071213018_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612111845160_Init.resx">
+      <DependentUpon>201612111845160_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
