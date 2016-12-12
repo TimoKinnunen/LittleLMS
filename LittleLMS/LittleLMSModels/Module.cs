@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,12 @@ namespace LittleLMS.LittleLMSModels
 {
     public class Module
     {
+        public Module()
+        {
+            ModuleDocuments = new List<Document>();
+            ModuleActivities = new List<Activity>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -38,6 +45,6 @@ namespace LittleLMS.LittleLMSModels
         public virtual ICollection<Document> ModuleDocuments { get; set; }
 
         [Display(Name = "Aktiviteter")]
-        public virtual ICollection<Activity> Activities { get; set; }
+        public virtual ICollection<Activity> ModuleActivities { get; set; }
     }
 }

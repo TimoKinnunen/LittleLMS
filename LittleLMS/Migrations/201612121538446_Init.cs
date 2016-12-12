@@ -31,10 +31,11 @@ namespace LittleLMS.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DocumentTypeId = c.Int(nullable: false),
-                        Name = c.String(nullable: false, maxLength: 255),
+                        FileName = c.String(maxLength: 255),
                         Description = c.String(nullable: false),
                         UploadedBy = c.String(nullable: false),
                         TimeOfRegistration = c.DateTime(nullable: false),
+                        Deadline = c.DateTime(),
                         ContentType = c.String(maxLength: 100),
                         Content = c.Binary(),
                         FeedbackFromTeacherToStudent = c.String(),
@@ -42,6 +43,32 @@ namespace LittleLMS.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.DocumentTypes", t => t.DocumentTypeId, cascadeDelete: true)
                 .Index(t => t.DocumentTypeId);
+            
+            CreateTable(
+                "dbo.Courses",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                        StartDate = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Modules",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CourseId = c.Int(nullable: false),
+                        Name = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                        StartDate = c.DateTime(nullable: false),
+                        EndDate = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Courses", t => t.CourseId, cascadeDelete: true)
+                .Index(t => t.CourseId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -81,32 +108,6 @@ namespace LittleLMS.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
-            CreateTable(
-                "dbo.Courses",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                        Description = c.String(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Modules",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        CourseId = c.Int(nullable: false),
-                        Name = c.String(nullable: false),
-                        Description = c.String(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
-                        EndDate = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Courses", t => t.CourseId, cascadeDelete: true)
-                .Index(t => t.CourseId);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -225,13 +226,13 @@ namespace LittleLMS.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUsers", "CourseId", "dbo.Courses");
+            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.ModuleDocuments", "Document_Id", "dbo.Documents");
             DropForeignKey("dbo.ModuleDocuments", "Module_Id", "dbo.Modules");
-            DropForeignKey("dbo.Modules", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.Activities", "ModuleId", "dbo.Modules");
+            DropForeignKey("dbo.Modules", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseDocuments", "Document_Id", "dbo.Documents");
             DropForeignKey("dbo.CourseDocuments", "Course_Id", "dbo.Courses");
-            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.DocumentActivities", "Activity_Id", "dbo.Activities");
             DropForeignKey("dbo.DocumentActivities", "Document_Id", "dbo.Documents");
             DropIndex("dbo.ApplicationUserDocuments", new[] { "Document_Id" });
@@ -246,10 +247,10 @@ namespace LittleLMS.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.Modules", new[] { "CourseId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUsers", new[] { "CourseId" });
+            DropIndex("dbo.Modules", new[] { "CourseId" });
             DropIndex("dbo.Documents", new[] { "DocumentTypeId" });
             DropIndex("dbo.Activities", new[] { "ModuleId" });
             DropIndex("dbo.Activities", new[] { "ActivityTypeId" });
@@ -262,10 +263,10 @@ namespace LittleLMS.Migrations
             DropTable("dbo.DocumentTypes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
-            DropTable("dbo.Modules");
-            DropTable("dbo.Courses");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.Modules");
+            DropTable("dbo.Courses");
             DropTable("dbo.Documents");
             DropTable("dbo.Activities");
         }

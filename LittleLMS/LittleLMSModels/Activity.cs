@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,11 @@ namespace LittleLMS.LittleLMSModels
 {
     public class Activity
     {
+        public Activity()
+        {
+            ActivityDocuments = new List<Document>();
+        }
+
         [Key]
         public int Id { get; set; }
 
