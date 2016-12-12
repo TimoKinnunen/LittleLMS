@@ -206,9 +206,9 @@
     <Compile Include="LittleLMSModels\Module.cs" />
     <Compile Include="LittleLMSViewModels\Student.cs" />
     <Compile Include="LittleLMSViewModels\StudentsController.cs" />
-    <Compile Include="Migrations\201612111845160_Init.cs" />
-    <Compile Include="Migrations\201612111845160_Init.Designer.cs">
-      <DependentUpon>201612111845160_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201612121538446_Init.cs" />
+    <Compile Include="Migrations\201612121538446_Init.Designer.cs">
+      <DependentUpon>201612121538446_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -348,8 +348,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612111845160_Init.resx">
-      <DependentUpon>201612111845160_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612121538446_Init.resx">
+      <DependentUpon>201612121538446_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

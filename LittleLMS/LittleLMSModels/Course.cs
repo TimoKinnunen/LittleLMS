@@ -1,12 +1,20 @@
 ﻿using LittleLMS.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace LittleLMS.LittleLMSModels
 {
     public class Course
     {
+        public Course()
+        {
+            CourseDocuments = new List<Document>();
+            CourseModules = new List<Module>();
+            CourseUsers = new List<ApplicationUser>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -28,9 +36,9 @@ namespace LittleLMS.LittleLMSModels
         public virtual ICollection<Document> CourseDocuments { get; set; }
 
         [Display(Name = "Moduler")]
-        public virtual ICollection<Module> Modules { get; set; }
+        public virtual ICollection<Module> CourseModules { get; set; }
 
         [Display(Name = "Användare")]
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> CourseUsers { get; set; }
     }
 }

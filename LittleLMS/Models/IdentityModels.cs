@@ -44,7 +44,7 @@ namespace LittleLMS.Models
 
         // navigation property
         [Display(Name = "Användarens dokumenter")]
-        public virtual ICollection<Document> UserDocuments { get; set; }
+        public virtual ICollection<Document> UserDocuments { get; set; } = new List<Document>();
 
     }
 

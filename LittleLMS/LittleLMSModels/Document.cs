@@ -8,6 +8,14 @@ namespace LittleLMS.LittleLMSModels
 {
     public class Document
     {
+        public Document()
+        {
+            DocumentUsers = new List<ApplicationUser>();
+            DocumentCourses = new List<Course>();
+            DocumentModules = new List<Module>();
+            DocumentActivities = new List<Activity>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -17,10 +25,9 @@ namespace LittleLMS.LittleLMSModels
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
 
-        [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
         [Display(Name = "Dokumentnamn")]
         [StringLength(255)]
-        public string Name { get; set; }
+        public string FileName { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha en beskrivning!")]
         [Display(Name = "Beskrivning")]
@@ -35,6 +42,9 @@ namespace LittleLMS.LittleLMSModels
         [Display(Name = "Registreringsdatum")]
         public DateTime TimeOfRegistration { get; set; }
 
+        [Display(Name = "Dokumentets deadline")]
+        public DateTime? Deadline { get; set; }
+
         [StringLength(100)]
         public string ContentType { get; set; }
 
@@ -45,12 +55,11 @@ namespace LittleLMS.LittleLMSModels
 
         // navigation property
         [Display(Name = "Användare")]
-        public virtual ICollection<ApplicationUser> DocumentApplicationUsers { get; set; }
+        public virtual ICollection<ApplicationUser> DocumentUsers { get; set; }
 
         // navigation property
         [Display(Name = "Kurser")]
         public virtual ICollection<Course> DocumentCourses { get; set; }
-
         // navigation property
         [Display(Name = "Moduler")]
         public virtual ICollection<Module> DocumentModules { get; set; }
@@ -58,5 +67,6 @@ namespace LittleLMS.LittleLMSModels
         // navigation property
         [Display(Name = "Aktiviteter")]
         public virtual ICollection<Activity> DocumentActivities { get; set; }
+
     }
 }

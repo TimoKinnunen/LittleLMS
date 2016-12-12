@@ -6,14 +6,11 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
-    using LittleLMSViewModels;
     using Microsoft.AspNet.Identity.Owin;
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.IO;
-    using System.Linq;
     using System.Web;
 
     public class DocumentsController : Controller
@@ -90,7 +87,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,DocumentTypeId,Name,Description,UploadedBy,TimeOfRegistration,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> Create([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedBy,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -101,7 +98,7 @@ namespace LittleLMS.LittleLMSControllers
                         Document dokumentToUpload = new Document
                         {
                             DocumentTypeId = document.DocumentTypeId,
-                            Name = Path.GetFileName(upload.FileName),
+                            FileName = Path.GetFileName(upload.FileName),
                             Description = document.Description,
                             UploadedBy = document.UploadedBy,
                             TimeOfRegistration = DateTime.Now,
@@ -114,14 +111,45 @@ namespace LittleLMS.LittleLMSControllers
                             dokumentToUpload.Content = reader.ReadBytes(upload.ContentLength);
                         }
 
+                        db.Documents.Add(dokumentToUpload);
+                        await db.SaveChangesAsync();
+
+                        var user = await UserManager.FindByEmailAsync("stina.larsson@lexicon.se");
+                        if (user!=null)
+                        {
+                            user.UserDocuments.Add(dokumentToUpload);
+                            dokumentToUpload.DocumentUsers.Add(user);
+                        }
+
+
+                        //Activity activity = await db.Activities.FirstOrDefaultAsync();
+
+                        //dokumentToUpload.DocumentActivities.Add(activity);
+
+
+                        //test
                         //var user = await UserManager.FindByEmailAsync("stina.larsson@lexicon.se");
                         //if (user != null)
                         //{
+                        //    //var list = user.UserDocuments;
+                        //    //list.Add(dokumentToUpload);
                         //    user.UserDocuments.Add(dokumentToUpload);
+                        //    dokumentToUpload.DocumentUsers.Add(user);
+
+                        //    var tmp = user.UserDocuments;
+
+                        //    var z = user.UserDocuments;
+
+                        //    user.UserDocuments.Add(dokumentToUpload);
+                        //    foreach (var item in user.UserDocuments)
+                        //    {
+                        //        var x = item.FileName;
+                        //    }
+                        //    //user.UserDocuments.Add(dokumentToUpload);
                         //}
 
-                        db.Documents.Add(dokumentToUpload);
-                        await db.SaveChangesAsync();
+                        //test
+                        //await db.SaveChangesAsync();
                     }
                 }
 
@@ -136,6 +164,15 @@ namespace LittleLMS.LittleLMSControllers
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
             return View(document);
+        }
+
+        // GET: download a file
+        [HttpGet]
+        public async Task<FileResult> Download(int? id)
+        {
+            Document document = await db.Documents.FindAsync(id);
+
+            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
         }
 
         // GET: Documents/Edit/5
@@ -159,7 +196,7 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,Name,Description,UploadedBy,TimeOfRegistration,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedBy,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
         {
             if (ModelState.IsValid)
             {
