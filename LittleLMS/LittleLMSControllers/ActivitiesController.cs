@@ -77,7 +77,7 @@ namespace LittleLMS.LittleLMSControllers
                 #region module
                 ViewBag.ModuleName = "Modulnamn: " + module.Name;
                 ViewBag.ModuleDescription = "Modulbeskrivning: " + module.Description;
-                ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", module.StartDate);
                 #endregion module
 
                 return View(await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync());

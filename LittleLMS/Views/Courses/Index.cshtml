@@ -117,11 +117,23 @@
 </table>
 
 <table class="table">
-    @if (User.IsInRole("Elev") || User.IsInRole("Lärare"))
-    {
+    @if (User.IsInRole("Elev")) {
         <caption>@Html.Label("Elever:")<br />@ViewBag.CourseStudentsMessage</caption>
-        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudents)
-        {
+
+        <tr>
+            <th>
+                @Html.Label("Namn")
+            </th>
+            <th>
+                @Html.Label("Email")
+            </th>
+            @*<th>
+                @Html.Label("Kursnamn")
+            </th>*@
+            <th></th>
+        </tr>
+
+        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudents) {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
@@ -129,6 +141,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Course.Name)
+                </td>*@
             </tr>
         }
     }

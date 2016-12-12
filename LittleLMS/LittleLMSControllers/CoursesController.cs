@@ -121,9 +121,13 @@ namespace LittleLMS.LittleLMSControllers
                 foreach (var applicationUser in await UserManager.Users.ToListAsync())
                 {
                     var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                    //var userCourseId = applicationUser.CourseId;
                     if (userRoles.Contains("Elev"))
                     {
-                        students.Add(applicationUser);
+                        if (applicationUser.CourseId == user.CourseId) {
+                            students.Add(applicationUser);
+                        }
+                        
                     }
                 }
 

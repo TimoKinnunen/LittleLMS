@@ -1,4 +1,5 @@
-﻿@model IEnumerable<LittleLMS.Models.ApplicationUser>
+﻿@*@model IEnumerable<LittleLMS.Models.ApplicationUser>*@
+@model IEnumerable<LittleLMS.LittleLMSViewModels.UserViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -14,21 +15,28 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FullName)
+            @*@Html.Label("Namn")*@
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.UserName)*@
-            @Html.Label("Användarnamn")
+            @Html.DisplayNameFor(model => model.Email)
+            @*@Html.Label("Email")*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleAsText)
+            @*@Html.Label("Roll")*@
         </th>
     </tr>
 
-    @foreach (var item in Model)
-    {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleAsText)
             </td>
             <td>
                 @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
@@ -39,3 +47,4 @@
     }
 
 </table>
+

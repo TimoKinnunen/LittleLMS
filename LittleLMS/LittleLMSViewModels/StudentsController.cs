@@ -89,7 +89,7 @@ namespace LittleLMS.LittleLMSViewModels
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
                 #endregion course
 
-                Student student = new Student
+                UserViewModel student = new UserViewModel
                 {
                     FirstName = "Förnamn",
                     LastName = "Efternamn",
@@ -107,7 +107,7 @@ namespace LittleLMS.LittleLMSViewModels
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "FirstName,LastName,Email,CourseId")] Student student)
+        public async Task<ActionResult> Create([Bind(Include = "FirstName,LastName,Email,CourseId")] UserViewModel student)
         {
             if (ModelState.IsValid)
             {
@@ -131,7 +131,7 @@ namespace LittleLMS.LittleLMSViewModels
                 if (!userResult.Succeeded)
                 {
                     ModelState.AddModelError("", userResult.Errors.First());
-                    Student newStudent = new Student
+                    UserViewModel newStudent = new UserViewModel
                     {
                         FirstName = "Förnamn",
                         LastName = "Efternamn",
@@ -148,7 +148,7 @@ namespace LittleLMS.LittleLMSViewModels
                     if (!result.Succeeded)
                     {
                         ModelState.AddModelError("", result.Errors.First());
-                        Student newStudent = new Student
+                        UserViewModel newStudent = new UserViewModel
                         {
                             FirstName = "Förnamn",
                             LastName = "Efternamn",

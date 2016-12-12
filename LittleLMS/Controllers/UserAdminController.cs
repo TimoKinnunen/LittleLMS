@@ -1,6 +1,8 @@
-﻿using LittleLMS.Models;
+﻿using LittleLMS.LittleLMSViewModels;
+using LittleLMS.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -53,7 +55,48 @@ namespace LittleLMS.Controllers
         // GET: /Users/
         public async Task<ActionResult> Index()
         {
-            return View(await UserManager.Users.ToListAsync());
+            #region teachers
+            var users = new List<UserViewModel>();
+
+            foreach (var applicationUser in await UserManager.Users.ToListAsync()) {
+                var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                if (userRoles.Contains("Lärare")) {
+                    UserViewModel userViewModel = new UserViewModel {
+                        Id = applicationUser.Id,
+                        FirstName = applicationUser.FirstName,
+                        LastName = applicationUser.LastName,
+                        Email = applicationUser.Email,
+                        RoleAsText = "Lärare"
+                    };
+                    users.Add(userViewModel);
+                }
+            }
+
+            //ViewBag.Teachers = teachers;
+            #endregion
+
+            #region students
+            //var students = new List<UserViewModel>();
+
+            foreach (var applicationUser in await UserManager.Users.ToListAsync()) {
+                var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                if (userRoles.Contains("Elev")) {
+                    UserViewModel userViewModel = new UserViewModel {
+                        Id = applicationUser.Id,
+                        FirstName = applicationUser.FirstName,
+                        LastName = applicationUser.LastName,
+                        Email = applicationUser.Email,
+                        RoleAsText = "Elev"
+                    };
+                    users.Add(userViewModel);
+                }
+            }
+
+            //ViewBag.Students = students;
+            #endregion students
+
+            //return View(await UserManager.Users.ToListAsync());
+            return View(users);
         }
 
         //

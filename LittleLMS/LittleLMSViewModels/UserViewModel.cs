@@ -2,8 +2,10 @@
 
 namespace LittleLMS.LittleLMSViewModels
 {
-    public class Student
+    public class UserViewModel
     {
+        public string Id { get; set; }
+
         [Required]
         [Display(Name = "Förnamn")]
         public string FirstName { get; set; }
@@ -12,9 +14,15 @@ namespace LittleLMS.LittleLMSViewModels
         [Display(Name = "Efternamn")]
         public string LastName { get; set; }
 
+        [Display(Name = "Namn")]
+        public string FullName { get { return FirstName + " " + LastName; } }
+
         [Required]
-        [Display(Name = "E-post adress")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Roll")]
+        public string RoleAsText { get; set; }
 
         public int CourseId { get; set; }
     }
