@@ -37,6 +37,7 @@
 
                         @*<li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>*@
                         <li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Dokumenthantering", "Index", "Documents")</li>
                     }
 
                     @if (Request.IsAuthenticated && User.IsInRole("Elev"))
@@ -54,8 +55,9 @@
 
                         @*<li>@Html.ActionLink("Rollhantering", "Index", "RolesAdmin")</li>*@
                         @*<li>@Html.ActionLink("Användarhantering", "Index", "UsersAdmin")</li>*@
+                        <li>@Html.ActionLink("Dokumenthantering", "Index", "Documents")</li>
                     }
-                    <li>@Html.ActionLink("Dokumenthantering", "Index", "Documents")</li>
+                    @*<li>@Html.ActionLink("Dokumenthantering", "Index", "Documents")</li>*@
 
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -9,7 +9,7 @@
     <h2>Moduler</h2>
     <h6>@ViewBag.UserName</h6>
     <p>
-        @Html.ActionLink("Lägg till ny modul", "Create")
+        @Html.ActionLink("Lägg till ny modul", "Create", new { courseId = ViewBag.CourseId })
     </p>
     <h2>@ViewBag.CourseName</h2>
     <h4>@ViewBag.CourseDescription</h4>
