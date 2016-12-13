@@ -1,7 +1,7 @@
 ﻿@model LittleLMS.LittleLMSModels.Document
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "DeleteDocument";
 }
 
 <h2>Ta bort</h2>
@@ -36,11 +36,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UploadedBy)
+            @Html.DisplayNameFor(model => model.UploadedByName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UploadedBy)
+            @Html.DisplayFor(model => model.UploadedByName)
         </dd>
 
         <dt>
@@ -85,11 +85,12 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            <input type="submit" value="Ta bort" class="btn btn-default" /> | 
             @Html.ActionLink("Tillbaka till listan", "Index")
         </div>
     }

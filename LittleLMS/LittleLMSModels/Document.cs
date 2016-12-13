@@ -35,7 +35,9 @@ namespace LittleLMS.LittleLMSModels
 
         [Required(ErrorMessage = "Dokumentet måste ha uppladdad av!")]
         [Display(Name = "Uppladdad av")]
-        public string UploadedBy { get; set; }
+        public string UploadedByName { get; set; }
+
+        public string UploadedByUserId { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha ett registreringsdatum!")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM

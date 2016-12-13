@@ -206,9 +206,9 @@
     <Compile Include="LittleLMSModels\Module.cs" />
     <Compile Include="LittleLMSViewModels\StudentsController.cs" />
     <Compile Include="LittleLMSViewModels\UserViewModel.cs" />
-    <Compile Include="Migrations\201612121805414_Init.cs" />
-    <Compile Include="Migrations\201612121805414_Init.Designer.cs">
-      <DependentUpon>201612121805414_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201612131026304_Init.cs" />
+    <Compile Include="Migrations\201612131026304_Init.Designer.cs">
+      <DependentUpon>201612131026304_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -328,8 +328,8 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
-    <Content Include="Views\Documents\Create.cshtml" />
-    <Content Include="Views\Documents\Delete.cshtml" />
+    <Content Include="Views\Documents\UploadFile.cshtml" />
+    <Content Include="Views\Documents\DeleteDocument.cshtml" />
     <Content Include="Views\Documents\Details.cshtml" />
     <Content Include="Views\Documents\Edit.cshtml" />
     <Content Include="Views\Documents\Index.cshtml" />
@@ -348,8 +348,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612121805414_Init.resx">
-      <DependentUpon>201612121805414_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612131026304_Init.resx">
+      <DependentUpon>201612131026304_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

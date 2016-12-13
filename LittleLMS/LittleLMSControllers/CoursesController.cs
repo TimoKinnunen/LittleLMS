@@ -11,6 +11,7 @@ namespace LittleLMS.LittleLMSControllers
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.IO;
     using System.Linq;
     using System.Web;
 
@@ -124,10 +125,11 @@ namespace LittleLMS.LittleLMSControllers
                     //var userCourseId = applicationUser.CourseId;
                     if (userRoles.Contains("Elev"))
                     {
-                        if (applicationUser.CourseId == user.CourseId) {
+                        if (applicationUser.CourseId == user.CourseId)
+                        {
                             students.Add(applicationUser);
                         }
-                        
+
                     }
                 }
 
@@ -144,6 +146,7 @@ namespace LittleLMS.LittleLMSControllers
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
                 ViewBag.UserName = "Lärare " + user.FullName + ". Du kan lägga till och redigera kurser.";
 
+
                 #region students
                 var students = new List<ApplicationUser>();
 
@@ -159,6 +162,19 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseStudents = students;
                 ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
                 #endregion students
+
+                #region documents
+                var documents = new List<Document>();
+
+                var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
+                if (dbUser != null)
+                {
+                    documents = dbUser.UserDocuments.ToList();
+                }
+
+                ViewBag.TeacherDocuments = documents;
+                ViewBag.TeacherDocumentsMessage = "Antal dokument är " + documents.Count + ".";
+                #endregion documents
 
                 return View(await db.Courses.ToListAsync());
             }
@@ -259,6 +275,15 @@ namespace LittleLMS.LittleLMSControllers
             db.Courses.Remove(course);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        // GET: download a file
+        [HttpGet]
+        public async Task<FileResult> Download(int? id)
+        {
+            Document document = await db.Documents.FindAsync(id);
+
+            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
         }
 
         protected override void Dispose(bool disposing)

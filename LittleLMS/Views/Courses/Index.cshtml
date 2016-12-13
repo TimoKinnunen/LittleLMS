@@ -39,7 +39,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th></th>
         </tr>
 
         foreach (var item in Model)
@@ -117,7 +116,8 @@
 </table>
 
 <table class="table">
-    @if (User.IsInRole("Elev")) {
+    @if (User.IsInRole("Elev"))
+    {
         <caption>@Html.Label("Elever:")<br />@ViewBag.CourseStudentsMessage</caption>
 
         <tr>
@@ -128,12 +128,13 @@
                 @Html.Label("Email")
             </th>
             @*<th>
-                @Html.Label("Kursnamn")
-            </th>*@
+                    @Html.Label("Kursnamn")
+                </th>*@
             <th></th>
         </tr>
 
-        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudents) {
+        foreach (var item in (IEnumerable<LittleLMS.Models.ApplicationUser>)ViewBag.CourseStudents)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
@@ -142,8 +143,74 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.Course.Name)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.Course.Name)
+                    </td>*@
+            </tr>
+        }
+    }
+</table>
+
+<table class="table">
+    @if (User.IsInRole("Lärare"))
+    {
+        <tr>
+            <th>
+                Dokumenttyp
+                @*@Html.DisplayNameFor(model => model.DocumentType.Name)*@
+            </th>
+            <th>
+                Dokumentnamn
+                @*@Html.DisplayNameFor(model => model.FileName)*@
+            </th>
+            <th>
+                Beskrivning
+                @*@Html.DisplayNameFor(model => model.Description)*@
+            </th>
+            <th>
+                Uppladdad av
+                @*@Html.DisplayNameFor(model => model.UploadedByName)*@
+            </th>
+            <th>
+                Registreringsdatum
+                @*@Html.DisplayNameFor(model => model.TimeOfRegistration)*@
+            </th>
+            <th>
+                Dokumentets deadline
+                @*@Html.DisplayNameFor(model => model.Deadline)*@
+            </th>
+            <th>
+                Feedback
+                @*@Html.DisplayNameFor(model => model.FeedbackFromTeacherToStudent)*@
+            </th>
+        </tr>
+
+        foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Document>)ViewBag.TeacherDocuments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadedByName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOfRegistration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FeedbackFromTeacherToStudent)
+                </td>
+                <td>
+                    @Html.ActionLink("Ladda ner", "Download", new { id = item.Id })
+                </td>
             </tr>
         }
     }

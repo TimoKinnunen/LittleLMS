@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using System;
     using System.Data.Entity;
@@ -13,6 +14,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.IO;
     using System.Web;
 
+    [Authorize(Roles = "Lärare")]
     public class DocumentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -75,9 +77,22 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Documents/Create
-        public ActionResult Create()
+        public async Task<ActionResult> UploadFile()
         {
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name");
+
+            if (User.IsInRole("Lärare") || User.IsInRole("Elev"))
+            {
+                var userId = User.Identity.GetUserId();
+                ApplicationUser user = await UserManager.FindByIdAsync(userId);
+
+                Document document = new Document
+                {
+                    UploadedByName = user.FullName
+                };
+
+                return View(document);
+            }
             return View();
         }
 
@@ -87,7 +102,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedBy,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -95,61 +110,37 @@ namespace LittleLMS.LittleLMSControllers
                 {
                     if (upload != null && upload.ContentLength > 0)
                     {
-                        Document dokumentToUpload = new Document
+                        if (User.IsInRole("Lärare") || User.IsInRole("Elev"))
                         {
-                            DocumentTypeId = document.DocumentTypeId,
-                            FileName = Path.GetFileName(upload.FileName),
-                            Description = document.Description,
-                            UploadedBy = document.UploadedBy,
-                            TimeOfRegistration = DateTime.Now,
-                            ContentType = upload.ContentType,
-                            FeedbackFromTeacherToStudent = String.Empty
-                        };
+                            var userId = User.Identity.GetUserId();
 
-                        using (var reader = new BinaryReader(upload.InputStream))
-                        {
-                            dokumentToUpload.Content = reader.ReadBytes(upload.ContentLength);
+                            Document dokumentToUpload = new Document
+                            {
+                                DocumentTypeId = document.DocumentTypeId,
+                                FileName = Path.GetFileName(upload.FileName),
+                                Description = document.Description,
+                                UploadedByName = document.UploadedByName,
+                                UploadedByUserId = userId,
+                                TimeOfRegistration = DateTime.Now,
+                                ContentType = upload.ContentType,
+                                FeedbackFromTeacherToStudent = string.Empty
+                            };
+
+                            using (var binaryReader = new BinaryReader(upload.InputStream))
+                            {
+                                dokumentToUpload.Content = binaryReader.ReadBytes(upload.ContentLength);
+                            }
+
+                            db.Documents.Add(dokumentToUpload);
+                            await db.SaveChangesAsync();
+
+                            var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
+                            if (dbUser != null)
+                            {
+                                dbUser.UserDocuments.Add(dokumentToUpload);
+                                await db.SaveChangesAsync();
+                            }
                         }
-
-                        db.Documents.Add(dokumentToUpload);
-                        await db.SaveChangesAsync();
-
-                        var user = await UserManager.FindByEmailAsync("stina.larsson@lexicon.se");
-                        if (user!=null)
-                        {
-                            user.UserDocuments.Add(dokumentToUpload);
-                            dokumentToUpload.DocumentUsers.Add(user);
-                        }
-
-
-                        //Activity activity = await db.Activities.FirstOrDefaultAsync();
-
-                        //dokumentToUpload.DocumentActivities.Add(activity);
-
-
-                        //test
-                        //var user = await UserManager.FindByEmailAsync("stina.larsson@lexicon.se");
-                        //if (user != null)
-                        //{
-                        //    //var list = user.UserDocuments;
-                        //    //list.Add(dokumentToUpload);
-                        //    user.UserDocuments.Add(dokumentToUpload);
-                        //    dokumentToUpload.DocumentUsers.Add(user);
-
-                        //    var tmp = user.UserDocuments;
-
-                        //    var z = user.UserDocuments;
-
-                        //    user.UserDocuments.Add(dokumentToUpload);
-                        //    foreach (var item in user.UserDocuments)
-                        //    {
-                        //        var x = item.FileName;
-                        //    }
-                        //    //user.UserDocuments.Add(dokumentToUpload);
-                        //}
-
-                        //test
-                        //await db.SaveChangesAsync();
                     }
                 }
 
@@ -196,7 +187,7 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedBy,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
         {
             if (ModelState.IsValid)
             {
@@ -208,8 +199,8 @@ namespace LittleLMS.LittleLMSControllers
             return View(document);
         }
 
-        // GET: Documents/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        // GET: Documents/DeleteDocument/5
+        public async Task<ActionResult> DeleteDocument(int? id)
         {
             if (id == null)
             {
@@ -223,8 +214,8 @@ namespace LittleLMS.LittleLMSControllers
             return View(document);
         }
 
-        // POST: Documents/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Documents/DeleteDocument/5
+        [HttpPost, ActionName("DeleteDocument")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
