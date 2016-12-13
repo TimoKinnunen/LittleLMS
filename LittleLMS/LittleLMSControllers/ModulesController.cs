@@ -181,6 +181,7 @@ namespace LittleLMS.LittleLMSControllers
             {
                 return HttpNotFound();
             }
+            ViewBag.CourseId = module.CourseId;
             return View(module);
         }
 

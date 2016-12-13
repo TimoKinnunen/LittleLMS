@@ -58,7 +58,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka till listan", "Index")
+            @Html.ActionLink("Tillbaka till moduler", "Index", new { courseId = ViewBag.CourseId }, null)
         </div>
     }
 </div>

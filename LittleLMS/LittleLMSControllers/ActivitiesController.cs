@@ -81,9 +81,11 @@ namespace LittleLMS.LittleLMSControllers
                 //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", module.StartDate);
                 #endregion module
 
+                ViewBag.ModuleId = moduleId;
                 return View(await db.Activities.Where(a => a.ModuleId == moduleId).ToListAsync());
             }
 
+            ViewBag.ModuleId = moduleId;
             return View(await db.Activities.ToListAsync());
         }
 
@@ -103,10 +105,11 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create()
+        public ActionResult Create(int? moduleId)
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name");
             //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
+            ViewBag.ModuleId = moduleId;
             return View();
         }
 
@@ -119,10 +122,12 @@ namespace LittleLMS.LittleLMSControllers
         {
             if (ModelState.IsValid)
             {
+                var xxx = activity.ModuleId;
+                Module module = await db.Modules.FindAsync(activity.ModuleId);
                 db.Activities.Add(activity);
                 await db.SaveChangesAsync();
                 int m_id = (int)activity.ModuleId;
-                return RedirectToAction("Index", new { id = m_id });
+                return RedirectToAction("Index", new { moduleId = m_id });
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
