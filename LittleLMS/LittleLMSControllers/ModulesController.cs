@@ -80,6 +80,7 @@ namespace LittleLMS.LittleLMSControllers
 
                 #region course
                 Course course = await db.Courses.FindAsync(courseId);
+                ViewBag.CourseId = course.Id;
                 ViewBag.CourseName = "Kursnamn: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
@@ -107,9 +108,10 @@ namespace LittleLMS.LittleLMSControllers
         }
 
         // GET: Modules/Create
-        public ActionResult Create()
+        public ActionResult Create(int? courseId)
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+            ViewBag.CourseId = courseId;
             return View();
         }
 
@@ -128,7 +130,7 @@ namespace LittleLMS.LittleLMSControllers
                 return RedirectToAction("Index", new { id = c_id });
             }
 
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
         }
 
@@ -144,7 +146,8 @@ namespace LittleLMS.LittleLMSControllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            ViewBag.CourseId = module.CourseId;
             return View(module);
         }
 
@@ -162,7 +165,7 @@ namespace LittleLMS.LittleLMSControllers
                 int c_id = (int)module.CourseId;
                 return RedirectToAction("Index", new { id = c_id });
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
         }
 

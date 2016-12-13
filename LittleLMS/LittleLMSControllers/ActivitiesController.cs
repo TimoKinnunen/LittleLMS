@@ -69,6 +69,7 @@ namespace LittleLMS.LittleLMSControllers
 
                 #region course
                 Course course = await db.Courses.FindAsync(module.Course.Id);
+                ViewBag.CourseId = course.Id;
                 ViewBag.CourseName = "Kursnamn: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
@@ -105,7 +106,7 @@ namespace LittleLMS.LittleLMSControllers
         public ActionResult Create()
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name");
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
             return View();
         }
 
@@ -125,7 +126,7 @@ namespace LittleLMS.LittleLMSControllers
             }
 
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             return View(activity);
         }
 
@@ -142,7 +143,7 @@ namespace LittleLMS.LittleLMSControllers
                 return HttpNotFound();
             }
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             return View(activity);
         }
 
@@ -160,7 +161,7 @@ namespace LittleLMS.LittleLMSControllers
                 return RedirectToAction("Index");
             }
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             return View(activity);
         }
 

@@ -82,6 +82,7 @@
 @if (User.IsInRole("Lärare"))
 {
     <div>
-        @Html.ActionLink("Tillbaka till kurser", "Index", "Courses")
+        @*@Html.ActionLink("Tillbaka till kurser", "Index", "Courses")*@
+        @Html.ActionLink("Tillbaka till moduler", "Index", "Modules", new { courseId = ViewBag.CourseId }, null)
     </div>
 }
