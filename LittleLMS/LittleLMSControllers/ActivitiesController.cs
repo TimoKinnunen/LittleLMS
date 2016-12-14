@@ -157,13 +157,19 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ActivityTypeId,ModuleId,Name,Description,StartDate,EndDate")] Activity activity)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ActivityTypeId,Name,Description,StartDate,EndDate")] Activity activity)
         {
             if (ModelState.IsValid)
             {
+                int moduleId = db.Activities
+                    .AsNoTracking()
+                    .Where(a => a.Id == activity.Id)
+                    .Select(a => a.ModuleId)
+                    .SingleOrDefault();
+                activity.ModuleId = moduleId;
                 db.Entry(activity).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { moduleId });
             }
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
             //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
