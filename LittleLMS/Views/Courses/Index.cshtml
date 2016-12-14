@@ -160,7 +160,7 @@
             </th>
             <th>
                 Dokumentnamn
-                @*@Html.DisplayNameFor(model => model.FileName)*@
+                @*@Html.DisplayNameFor(model => model.DocumentName)*@
             </th>
             <th>
                 Beskrivning
@@ -174,14 +174,6 @@
                 Registreringsdatum
                 @*@Html.DisplayNameFor(model => model.TimeOfRegistration)*@
             </th>
-            <th>
-                Dokumentets deadline
-                @*@Html.DisplayNameFor(model => model.Deadline)*@
-            </th>
-            <th>
-                Feedback
-                @*@Html.DisplayNameFor(model => model.FeedbackFromTeacherToStudent)*@
-            </th>
         </tr>
 
         foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Document>)ViewBag.TeacherDocuments)
@@ -191,7 +183,7 @@
                     @Html.DisplayFor(modelItem => item.DocumentType.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
+                    @Html.DisplayFor(modelItem => item.DocumentName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -201,12 +193,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TimeOfRegistration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deadline)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FeedbackFromTeacherToStudent)
                 </td>
                 <td>
                     @Html.ActionLink("Ladda ner", "Download", new { id = item.Id })

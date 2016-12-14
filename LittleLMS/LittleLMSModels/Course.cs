@@ -27,7 +27,7 @@ namespace LittleLMS.LittleLMSModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Kursen måste ha ett startdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] 
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 

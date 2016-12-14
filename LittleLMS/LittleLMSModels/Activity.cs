@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,13 +32,13 @@ namespace LittleLMS.LittleLMSModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Aktiviteten måste ha ett startdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] 
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Aktiviteten måste ha ett slutdatum!")]
         [Display(Name = "Slutdatum")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
         // navigation property

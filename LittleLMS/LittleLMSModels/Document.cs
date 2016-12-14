@@ -25,8 +25,11 @@ namespace LittleLMS.LittleLMSModels
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
 
+        [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
         [Display(Name = "Dokumentnamn")]
         [StringLength(255)]
+        public string DocumentName { get; set; }
+
         public string FileName { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha en beskrivning!")]
@@ -40,20 +43,14 @@ namespace LittleLMS.LittleLMSModels
         public string UploadedByUserId { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha ett registreringsdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         [Display(Name = "Registreringsdatum")]
         public DateTime TimeOfRegistration { get; set; }
-
-        [Display(Name = "Dokumentets deadline")]
-        public DateTime? Deadline { get; set; }
 
         [StringLength(100)]
         public string ContentType { get; set; }
 
         public byte[] Content { get; set; }
-
-        [Display(Name = "Feedback")]
-        public string FeedbackFromTeacherToStudent { get; set; }
 
         // navigation property
         [Display(Name = "Användare")]

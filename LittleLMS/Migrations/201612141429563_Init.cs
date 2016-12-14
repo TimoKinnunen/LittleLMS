@@ -31,15 +31,14 @@ namespace LittleLMS.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DocumentTypeId = c.Int(nullable: false),
-                        FileName = c.String(maxLength: 255),
+                        DocumentName = c.String(nullable: false, maxLength: 255),
+                        FileName = c.String(),
                         Description = c.String(nullable: false),
                         UploadedByName = c.String(nullable: false),
                         UploadedByUserId = c.String(),
                         TimeOfRegistration = c.DateTime(nullable: false),
-                        Deadline = c.DateTime(),
                         ContentType = c.String(maxLength: 100),
                         Content = c.Binary(),
-                        FeedbackFromTeacherToStudent = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.DocumentTypes", t => t.DocumentTypeId, cascadeDelete: true)

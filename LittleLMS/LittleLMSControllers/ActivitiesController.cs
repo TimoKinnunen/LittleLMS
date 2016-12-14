@@ -72,13 +72,13 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseId = course.Id;
                 ViewBag.CourseName = "Kurs: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
 
                 #region module
                 ViewBag.ModuleName = "Modul: " + module.Name;
                 ViewBag.ModuleDescription = "Modulbeskrivning: " + module.Description;
-                //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", module.StartDate);
+                //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:d}.", module.StartDate);
                 #endregion module
 
                 ViewBag.ModuleId = moduleId;

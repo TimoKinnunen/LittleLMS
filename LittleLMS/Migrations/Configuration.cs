@@ -31,10 +31,14 @@ namespace LittleLMS.Migrations
 
             context.DocumentTypes.AddOrUpdate(
                 p => p.Name,
+                    new DocumentType { Name = "Feedback från läraren" },
+                    new DocumentType { Name = "Feedback från eleven" },
+                    new DocumentType { Name = "Kursdokument" },
+                    new DocumentType { Name = "Moduldokument" },
+                    new DocumentType { Name = "Aktivitetsdokument" },
                     new DocumentType { Name = "Inlämningsuppgift" },
                     new DocumentType { Name = "Övningsuppgift" },
-                    new DocumentType { Name = "Föreläsningsunderlag" },
-                    new DocumentType { Name = "Moduldokument" }
+                    new DocumentType { Name = "Föreläsningsunderlag" }
                 );
 
             context.SaveChanges();

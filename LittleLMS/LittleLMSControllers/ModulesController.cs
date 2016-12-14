@@ -83,7 +83,7 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseId = course.Id;
                 ViewBag.CourseName = "Kurs: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
 
                 return View(await db.Modules.Where(m => m.CourseId == courseId).ToListAsync());

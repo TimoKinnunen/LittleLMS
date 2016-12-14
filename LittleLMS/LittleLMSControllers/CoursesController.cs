@@ -84,7 +84,7 @@ namespace LittleLMS.LittleLMSControllers
                 Course course = await db.Courses.FindAsync(courseId);
                 ViewBag.CourseName = "Kursnamn: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
 
                 #region module
@@ -283,7 +283,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             Document document = await db.Documents.FindAsync(id);
 
-            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
+            return File(document.Content, document.ContentType, Path.GetFileName(document.DocumentName));
         }
 
         protected override void Dispose(bool disposing)
