@@ -83,5 +83,7 @@ namespace LittleLMS.Models
         public DbSet<Document> Documents { get; set; }
 
         public DbSet<DocumentType> DocumentTypes { get; set; }
+
+        public DbSet<ReceiverType> ReceiverTypes { get; set; }
     }
 }

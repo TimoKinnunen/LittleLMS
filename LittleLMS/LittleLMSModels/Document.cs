@@ -19,11 +19,19 @@ namespace LittleLMS.LittleLMSModels
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Dokumentet måste ha en typ!")]
+        [Required(ErrorMessage = "Dokumentet måste ha en dokumenttyp!")]
         [Display(Name = "Dokumenttyp")]
         public int DocumentTypeId { get; set; }
+
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
+
+        [Required(ErrorMessage = "Dokumentet måste ha en mottagartyp!")]
+        [Display(Name = "Mottagartyp")]
+        public int ReceiverTypeId { get; set; }
+
+        [ForeignKey("ReceiverTypeId")]
+        public virtual ReceiverType ReceiverType { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
         [Display(Name = "Dokumentnamn")]

@@ -7,109 +7,107 @@ using System.Web.Mvc;
 namespace LittleLMS.LittleLMSControllers
 {
     using System.Data.Entity;
-
-    [Authorize(Roles = "Lärare")]
-    public class DocumentTypesController : Controller
+    public class ReceiverTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: DocumentTypes
+        // GET: ReceiverTypes
         public async Task<ActionResult> Index()
         {
-            return View(await db.DocumentTypes.ToListAsync());
+            return View(await db.ReceiverTypes.ToListAsync());
         }
 
-        // GET: DocumentTypes/Details/5
+        // GET: ReceiverTypes/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = await db.DocumentTypes.FindAsync(id);
-            if (documentType == null)
+            ReceiverType receiverType = await db.ReceiverTypes.FindAsync(id);
+            if (receiverType == null)
             {
                 return HttpNotFound();
             }
-            return View(documentType);
+            return View(receiverType);
         }
 
-        // GET: DocumentTypes/Create
+        // GET: ReceiverTypes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: DocumentTypes/Create
+        // POST: ReceiverTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] DocumentType documentType)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] ReceiverType receiverType)
         {
             if (ModelState.IsValid)
             {
-                db.DocumentTypes.Add(documentType);
+                db.ReceiverTypes.Add(receiverType);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(documentType);
+            return View(receiverType);
         }
 
-        // GET: DocumentTypes/Edit/5
+        // GET: ReceiverTypes/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = await db.DocumentTypes.FindAsync(id);
-            if (documentType == null)
+            ReceiverType receiverType = await db.ReceiverTypes.FindAsync(id);
+            if (receiverType == null)
             {
                 return HttpNotFound();
             }
-            return View(documentType);
+            return View(receiverType);
         }
 
-        // POST: DocumentTypes/Edit/5
+        // POST: ReceiverTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] DocumentType documentType)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] ReceiverType receiverType)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(documentType).State = EntityState.Modified;
+                db.Entry(receiverType).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(documentType);
+            return View(receiverType);
         }
 
-        // GET: DocumentTypes/Delete/5
+        // GET: ReceiverTypes/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = await db.DocumentTypes.FindAsync(id);
-            if (documentType == null)
+            ReceiverType receiverType = await db.ReceiverTypes.FindAsync(id);
+            if (receiverType == null)
             {
                 return HttpNotFound();
             }
-            return View(documentType);
+            return View(receiverType);
         }
 
-        // POST: DocumentTypes/Delete/5
+        // POST: ReceiverTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            DocumentType documentType = await db.DocumentTypes.FindAsync(id);
-            db.DocumentTypes.Remove(documentType);
+            ReceiverType receiverType = await db.ReceiverTypes.FindAsync(id);
+            db.ReceiverTypes.Remove(receiverType);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
