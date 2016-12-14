@@ -127,7 +127,7 @@ namespace LittleLMS.LittleLMSControllers
                 db.Modules.Add(module);
                 await db.SaveChangesAsync();
                 int c_id = (int)module.CourseId;
-                return RedirectToAction("Index", new { id = c_id });
+                return RedirectToAction("Index", new { courseId = c_id });
             }
 
             //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
@@ -156,14 +156,20 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CourseId,Name,Description,StartDate,EndDate")] Module module)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate")] Module module)
         {
             if (ModelState.IsValid)
             {
+                int courseId = db.Modules
+                    .AsNoTracking()
+                    .Where(m => m.Id == module.Id)
+                    .Select(m => m.CourseId)
+                    .SingleOrDefault();
+                module.CourseId = courseId;
                 db.Entry(module).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                int c_id = (int)module.CourseId;
-                return RedirectToAction("Index", new { id = c_id });
+
+                await db.SaveChangesAsync();                
+                return RedirectToAction("Index", new { courseId });
             }
             //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
