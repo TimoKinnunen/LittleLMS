@@ -102,7 +102,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document)
         {
             if (ModelState.IsValid)
             {

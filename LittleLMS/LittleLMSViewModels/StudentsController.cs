@@ -86,7 +86,7 @@ namespace LittleLMS.LittleLMSViewModels
                 Course course = await db.Courses.FindAsync(courseId);
                 ViewBag.CourseName = "Kursnamn: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
-                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
+                ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
 
                 UserViewModel student = new UserViewModel

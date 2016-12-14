@@ -43,12 +43,9 @@ namespace LittleLMS.LittleLMSModels
         public string UploadedByUserId { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha ett registreringsdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] //g Default date & time 10/12/2002 10:11 PM
         [Display(Name = "Registreringsdatum")]
         public DateTime TimeOfRegistration { get; set; }
-
-        [Display(Name = "Dokumentets deadline")]
-        public DateTime? Deadline { get; set; }
 
         [StringLength(100)]
         public string ContentType { get; set; }

@@ -30,13 +30,13 @@ namespace LittleLMS.LittleLMSModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Modulen måste ha ett startdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] 
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Slutdatum")]
         [Required(ErrorMessage = "Modulen måste ha ett slutdatum!")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)] 
         public DateTime EndDate { get; set; }
 
         // navigation property
