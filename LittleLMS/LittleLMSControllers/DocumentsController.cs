@@ -12,6 +12,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.IO;
+    using System.Linq;
     using System.Web;
 
     [Authorize(Roles = "Lärare")]
@@ -102,7 +103,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -193,10 +194,18 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document)
         {
             if (ModelState.IsValid)
             {
+                //var oldDocument = db.Documents
+                //    .Where(d => d.Id == document.Id)
+                //    .Select(d => new { d.TimeOfRegistration, d.FileName })
+                //    .SingleOrDefault();
+                //document.TimeOfRegistration = oldDocument.TimeOfRegistration;
+                //document.FileName = oldDocument.FileName;
+
+
                 db.Entry(document).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

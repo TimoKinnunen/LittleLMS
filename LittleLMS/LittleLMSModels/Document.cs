@@ -67,5 +67,6 @@ namespace LittleLMS.LittleLMSModels
         [Display(Name = "Aktiviteter")]
         public virtual ICollection<Activity> DocumentActivities { get; set; }
 
+        
     }
 }
