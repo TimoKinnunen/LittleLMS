@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.DocumentType.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FileName)
+            @Html.DisplayNameFor(model => model.DocumentName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -35,9 +35,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Content)
             </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.FeedbackFromTeacherToStudent)
-        </th>
         <th></th>
     </tr>
 
@@ -48,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.DocumentType.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileName)
+                @Html.DisplayFor(modelItem => item.DocumentName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -68,9 +65,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Content)
                 </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.FeedbackFromTeacherToStudent)
-            </td>
             <td>
                 @Html.ActionLink("Ladda ner", "Download", new { id = item.Id }) |
                 @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |

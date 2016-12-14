@@ -283,7 +283,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             Document document = await db.Documents.FindAsync(id);
 
-            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
+            return File(document.Content, document.ContentType, Path.GetFileName(document.DocumentName));
         }
 
         protected override void Dispose(bool disposing)

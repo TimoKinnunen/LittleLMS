@@ -25,8 +25,11 @@ namespace LittleLMS.LittleLMSModels
         [ForeignKey("DocumentTypeId")]
         public virtual DocumentType DocumentType { get; set; }
 
+        [Required(ErrorMessage = "Dokumentet måste ha ett namn!")]
         [Display(Name = "Dokumentnamn")]
         [StringLength(255)]
+        public string DocumentName { get; set; }
+
         public string FileName { get; set; }
 
         [Required(ErrorMessage = "Dokumentet måste ha en beskrivning!")]
@@ -51,9 +54,6 @@ namespace LittleLMS.LittleLMSModels
         public string ContentType { get; set; }
 
         public byte[] Content { get; set; }
-
-        [Display(Name = "Feedback")]
-        public string FeedbackFromTeacherToStudent { get; set; }
 
         // navigation property
         [Display(Name = "Användare")]

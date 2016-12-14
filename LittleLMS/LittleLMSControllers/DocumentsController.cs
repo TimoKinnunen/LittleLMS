@@ -102,7 +102,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -117,13 +117,13 @@ namespace LittleLMS.LittleLMSControllers
                             Document dokumentToUpload = new Document
                             {
                                 DocumentTypeId = document.DocumentTypeId,
+                                DocumentName = document.DocumentName,
                                 FileName = Path.GetFileName(upload.FileName),
                                 Description = document.Description,
                                 UploadedByName = document.UploadedByName,
                                 UploadedByUserId = userId,
                                 TimeOfRegistration = DateTime.Now,
-                                ContentType = upload.ContentType,
-                                FeedbackFromTeacherToStudent = string.Empty
+                                ContentType = upload.ContentType
                             };
 
                             using (var binaryReader = new BinaryReader(upload.InputStream))
@@ -141,6 +141,12 @@ namespace LittleLMS.LittleLMSControllers
                                 await db.SaveChangesAsync();
                             }
                         }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Du måste välja en fil eller gå tillbaka till listan.");
+                        ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
+                        return View(document);
                     }
                 }
 
@@ -163,7 +169,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             Document document = await db.Documents.FindAsync(id);
 
-            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
+            return File(document.Content, document.ContentType, Path.GetFileName(document.DocumentName));
         }
 
         // GET: Documents/Edit/5
@@ -187,7 +193,7 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,FileName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType,Content,FeedbackFromTeacherToStudent")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,Deadline,ContentType")] Document document)
         {
             if (ModelState.IsValid)
             {
