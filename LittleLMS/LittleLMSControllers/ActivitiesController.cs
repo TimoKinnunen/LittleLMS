@@ -70,13 +70,13 @@ namespace LittleLMS.LittleLMSControllers
                 #region course
                 Course course = await db.Courses.FindAsync(module.Course.Id);
                 ViewBag.CourseId = course.Id;
-                ViewBag.CourseName = "Kursnamn: " + course.Name;
+                ViewBag.CourseName = "Kurs: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
                 #endregion course
 
                 #region module
-                ViewBag.ModuleName = "Modulnamn: " + module.Name;
+                ViewBag.ModuleName = "Modul: " + module.Name;
                 ViewBag.ModuleDescription = "Modulbeskrivning: " + module.Description;
                 //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:dd MMM yyyy}.", module.StartDate);
                 #endregion module
@@ -122,7 +122,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             if (ModelState.IsValid)
             {
-                var xxx = activity.ModuleId;
+                //var xxx = activity.ModuleId;
                 Module module = await db.Modules.FindAsync(activity.ModuleId);
                 db.Activities.Add(activity);
                 await db.SaveChangesAsync();
@@ -197,9 +197,10 @@ namespace LittleLMS.LittleLMSControllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Activity activity = await db.Activities.FindAsync(id);
+            int moduleId = activity.ModuleId;
             db.Activities.Remove(activity);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { moduleId });
         }
 
         protected override void Dispose(bool disposing)

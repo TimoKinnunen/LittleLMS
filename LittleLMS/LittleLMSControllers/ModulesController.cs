@@ -81,7 +81,7 @@ namespace LittleLMS.LittleLMSControllers
                 #region course
                 Course course = await db.Courses.FindAsync(courseId);
                 ViewBag.CourseId = course.Id;
-                ViewBag.CourseName = "Kursnamn: " + course.Name;
+                ViewBag.CourseName = "Kurs: " + course.Name;
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:dd MMM yyyy}.", course.StartDate);
                 #endregion course
@@ -111,7 +111,14 @@ namespace LittleLMS.LittleLMSControllers
         public ActionResult Create(int? courseId)
         {
             //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-            ViewBag.CourseId = courseId;
+            #region course
+            Course course = db.Courses.Find(courseId);
+            ViewBag.CourseId = course.Id;
+            ViewBag.HeaderText = "Kurs: " + course.Name;
+            //ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
+            #endregion course
+
+            //ViewBag.CourseId = courseId;
             return View();
         }
 
@@ -197,9 +204,10 @@ namespace LittleLMS.LittleLMSControllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Module module = await db.Modules.FindAsync(id);
+            int courseId = module.CourseId;
             db.Modules.Remove(module);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { courseId });
         }
 
         protected override void Dispose(bool disposing)
