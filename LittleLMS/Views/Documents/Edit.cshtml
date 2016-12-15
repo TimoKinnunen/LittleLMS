@@ -1,4 +1,4 @@
-﻿@model LittleLMS.LittleLMSModels.Document
+﻿@model LittleLMS.LittleLMSViewModels.DocumentViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -18,10 +18,18 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DocumentTypeId, "DocumentTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DocumentTypeId, "Dokumenttyp", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("DocumentTypeId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.DocumentTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReceiverTypeId, "Mottagartyp", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ReceiverTypeId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReceiverTypeId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -41,21 +49,21 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.UploadedByName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.UploadedByName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UploadedByName, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.TimeOfRegistration, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TimeOfRegistration, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TimeOfRegistration, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         @*<div class="form-group">
             @Html.LabelFor(model => model.ContentType, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -75,7 +83,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Spara" class="btn btn-default" />
             </div>
         </div>
     </div>

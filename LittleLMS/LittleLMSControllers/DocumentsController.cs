@@ -6,12 +6,14 @@ using System.Web.Mvc;
 
 namespace LittleLMS.LittleLMSControllers
 {
+    using LittleLMSViewModels;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.IO;
+    using System.Linq;
     using System.Web;
 
     [Authorize(Roles = "Lärare")]
@@ -80,6 +82,7 @@ namespace LittleLMS.LittleLMSControllers
         public async Task<ActionResult> UploadFile()
         {
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name");
+            ViewBag.ReceiverTypeId = new SelectList(db.ReceiverTypes, "Id", "Name");
 
             if (User.IsInRole("Lärare") || User.IsInRole("Elev"))
             {
@@ -102,7 +105,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, HttpPostedFileBase upload)
         {
             try
             {
@@ -117,6 +120,7 @@ namespace LittleLMS.LittleLMSControllers
                             Document dokumentToUpload = new Document
                             {
                                 DocumentTypeId = document.DocumentTypeId,
+                                ReceiverTypeId = document.ReceiverTypeId,
                                 DocumentName = document.DocumentName,
                                 FileName = Path.GetFileName(upload.FileName),
                                 Description = document.Description,
@@ -185,7 +189,18 @@ namespace LittleLMS.LittleLMSControllers
                 return HttpNotFound();
             }
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
-            return View(document);
+            ViewBag.ReceiverTypeId = new SelectList(db.ReceiverTypes, "Id", "Name", document.ReceiverTypeId);
+
+            DocumentViewModel documentViewModel = new DocumentViewModel
+            {
+                Id = document.Id,
+                DocumentTypeId = document.DocumentTypeId,
+                ReceiverTypeId = document.ReceiverTypeId,
+                DocumentName = document.DocumentName,
+                Description = document.Description
+            };
+
+            return View(documentViewModel);
         }
 
         // POST: Documents/Edit/5
@@ -193,15 +208,37 @@ namespace LittleLMS.LittleLMSControllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,DocumentName,Description,UploadedByName,TimeOfRegistration,ContentType")] Document document)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,DocumentName,Description")] DocumentViewModel documentViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(document).State = EntityState.Modified;
+                Document existingDocument = await db.Documents.FindAsync(documentViewModel.Id);
+                if (existingDocument != null)
+                {
+                    existingDocument.DocumentTypeId = documentViewModel.DocumentTypeId;
+                    existingDocument.ReceiverTypeId = documentViewModel.ReceiverTypeId;
+                    existingDocument.DocumentName = documentViewModel.DocumentName;
+                    existingDocument.Description = documentViewModel.Description;
+                }
+
+                db.Entry(existingDocument).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
+            Document document = await db.Documents.FindAsync(documentViewModel.Id);
+            DocumentViewModel newDocumentViewModel = new DocumentViewModel
+            {
+                Id = document.Id,
+                DocumentTypeId = document.DocumentTypeId,
+                ReceiverTypeId = document.ReceiverTypeId,
+                DocumentName = document.DocumentName,
+                Description = document.Description
+            };
+
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
+            ViewBag.ReceiverTypeId = new SelectList(db.ReceiverTypes, "Id", "Name", document.ReceiverTypeId);
+
             return View(document);
         }
 

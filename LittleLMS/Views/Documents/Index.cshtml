@@ -9,10 +9,19 @@
 <p>
     @Html.ActionLink("Ladda upp", "UploadFile")
 </p>
+<p>
+    @Html.ActionLink("Dokumenttyp", "Index", "DocumentTypes")
+</p>
+<p>
+    @Html.ActionLink("Mottagartyp", "Index", "ReceiverTypes")
+</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.DocumentType.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceiverType.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DocumentName)
@@ -40,6 +49,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DocumentType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiverType.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DocumentName)

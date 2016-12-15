@@ -19,6 +19,17 @@ namespace LittleLMS.Migrations
         protected override void Seed(ApplicationDbContext context)
         {
 
+            context.ReceiverTypes.AddOrUpdate(
+                 p => p.Name,
+                    new ReceiverType { Name = "Lärare" },
+                    new ReceiverType { Name = "Elev" },
+                    new ReceiverType { Name = "Kurs" },
+                    new ReceiverType { Name = "Modul" },
+                    new ReceiverType { Name = "Aktivitet" }
+                );
+
+            context.SaveChanges();
+
             context.ActivityTypes.AddOrUpdate(
                  p => p.Name,
                     new ActivityType { Name = "E-learning" },

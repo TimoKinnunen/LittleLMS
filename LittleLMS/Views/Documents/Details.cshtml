@@ -19,6 +19,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.ReceiverType.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiverType.Name)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.DocumentName)
         </dt>
 
@@ -50,13 +58,13 @@
             @Html.DisplayFor(model => model.UploadedByName)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.UploadedByUserId)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.UploadedByUserId)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.TimeOfRegistration)

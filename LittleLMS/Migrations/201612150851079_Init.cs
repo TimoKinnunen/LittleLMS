@@ -31,6 +31,7 @@ namespace LittleLMS.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DocumentTypeId = c.Int(nullable: false),
+                        ReceiverTypeId = c.Int(nullable: false),
                         DocumentName = c.String(nullable: false, maxLength: 255),
                         FileName = c.String(),
                         Description = c.String(nullable: false),
@@ -42,7 +43,9 @@ namespace LittleLMS.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.DocumentTypes", t => t.DocumentTypeId, cascadeDelete: true)
-                .Index(t => t.DocumentTypeId);
+                .ForeignKey("dbo.ReceiverTypes", t => t.ReceiverTypeId, cascadeDelete: true)
+                .Index(t => t.DocumentTypeId)
+                .Index(t => t.ReceiverTypeId);
             
             CreateTable(
                 "dbo.Courses",
@@ -144,6 +147,15 @@ namespace LittleLMS.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.ReceiverTypes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.ActivityTypes",
                 c => new
                     {
@@ -220,6 +232,7 @@ namespace LittleLMS.Migrations
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Activities", "ActivityTypeId", "dbo.ActivityTypes");
+            DropForeignKey("dbo.Documents", "ReceiverTypeId", "dbo.ReceiverTypes");
             DropForeignKey("dbo.Documents", "DocumentTypeId", "dbo.DocumentTypes");
             DropForeignKey("dbo.ApplicationUserDocuments", "Document_Id", "dbo.Documents");
             DropForeignKey("dbo.ApplicationUserDocuments", "ApplicationUser_Id", "dbo.AspNetUsers");
@@ -251,6 +264,7 @@ namespace LittleLMS.Migrations
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUsers", new[] { "CourseId" });
             DropIndex("dbo.Modules", new[] { "CourseId" });
+            DropIndex("dbo.Documents", new[] { "ReceiverTypeId" });
             DropIndex("dbo.Documents", new[] { "DocumentTypeId" });
             DropIndex("dbo.Activities", new[] { "ModuleId" });
             DropIndex("dbo.Activities", new[] { "ActivityTypeId" });
@@ -260,6 +274,7 @@ namespace LittleLMS.Migrations
             DropTable("dbo.DocumentActivities");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.ActivityTypes");
+            DropTable("dbo.ReceiverTypes");
             DropTable("dbo.DocumentTypes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
