@@ -206,8 +206,9 @@
     <Compile Include="LittleLMSModels\ReceiverType.cs" />
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
-    <Compile Include="LittleLMSViewModels\StudentsController.cs" />
+    <Compile Include="LittleLMSControllers\StudentsController.cs" />
     <Compile Include="LittleLMSViewModels\DocumentViewModel.cs" />
+    <Compile Include="LittleLMSViewModels\DocumentStudentsViewModel.cs" />
     <Compile Include="LittleLMSViewModels\UserViewModel.cs" />
     <Compile Include="Migrations\201612150851079_Init.cs" />
     <Compile Include="Migrations\201612150851079_Init.Designer.cs">

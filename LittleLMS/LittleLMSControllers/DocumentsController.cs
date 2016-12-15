@@ -10,6 +10,7 @@ namespace LittleLMS.LittleLMSControllers
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.IO;
@@ -60,7 +61,7 @@ namespace LittleLMS.LittleLMSControllers
         // GET: Documents
         public async Task<ActionResult> Index()
         {
-            return View(await db.Documents.ToListAsync());
+            return View(await db.Documents.OrderByDescending(d => d.TimeOfRegistration).ToListAsync());
         }
 
         // GET: Documents/Details/5
@@ -94,8 +95,33 @@ namespace LittleLMS.LittleLMSControllers
                     UploadedByName = user.FullName
                 };
 
+                #region students
+                var students = new List<DocumentStudentsViewModel>();
+
+                foreach (var applicationUser in await UserManager.Users.ToListAsync())
+                {
+                    var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                    if (userRoles.Contains("Elev"))
+                    {
+                        if (applicationUser.Id != userId)
+                        {
+                            students.Add(new DocumentStudentsViewModel
+                            {
+                                StudentId = applicationUser.Id,
+                                StudentName = applicationUser.FullName,
+                                StudentEmail = applicationUser.Email,
+                                IsSelected = false
+                            });
+                        }
+                    }
+                }
+                ViewBag.AllStudents = students;
+                ViewBag.AllStudentsMessage = "Antal elever är " + students.Count + ".";
+                #endregion students
+
                 return View(document);
             }
+            ModelState.AddModelError("", "Du måste vara lärare eller elev för att ladda upp dokument.");
             return View();
         }
 
@@ -105,7 +131,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, string[] students, HttpPostedFileBase upload)
         {
             try
             {
@@ -135,6 +161,7 @@ namespace LittleLMS.LittleLMSControllers
                                 dokumentToUpload.Content = binaryReader.ReadBytes(upload.ContentLength);
                             }
 
+                            #region add document to inlogged user's list of documents
                             db.Documents.Add(dokumentToUpload);
                             await db.SaveChangesAsync();
 
@@ -144,6 +171,19 @@ namespace LittleLMS.LittleLMSControllers
                                 dbUser.UserDocuments.Add(dokumentToUpload);
                                 await db.SaveChangesAsync();
                             }
+                            #endregion add document to inlogged user's list of documents
+
+                            #region add document to marked student's list of documents
+                            foreach (var student in students)
+                            {
+                                var elev = db.Users.Where(u => u.Id == student).FirstOrDefault();
+                                if (elev != null)
+                                {
+                                    elev.UserDocuments.Add(dokumentToUpload);
+                                }
+                            }
+                            await db.SaveChangesAsync();
+                            #endregion add document to marked students list of documents
                         }
                     }
                     else
@@ -173,7 +213,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             Document document = await db.Documents.FindAsync(id);
 
-            return File(document.Content, document.ContentType, Path.GetFileName(document.DocumentName));
+            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
         }
 
         // GET: Documents/Edit/5

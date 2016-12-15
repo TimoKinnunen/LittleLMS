@@ -129,13 +129,25 @@ namespace LittleLMS.LittleLMSControllers
                         {
                             students.Add(applicationUser);
                         }
-
                     }
                 }
 
                 ViewBag.CourseStudents = students;
                 ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
                 #endregion students
+
+                #region documents
+                var documents = new List<Document>();
+
+                var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
+                if (dbUser != null)
+                {
+                    documents = dbUser.UserDocuments.ToList();
+                }
+
+                ViewBag.UserDocuments = documents;
+                ViewBag.UserDocumentsMessage = "Antal dokument är " + documents.Count + ".";
+                #endregion documents
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
@@ -172,8 +184,8 @@ namespace LittleLMS.LittleLMSControllers
                     documents = dbUser.UserDocuments.ToList();
                 }
 
-                ViewBag.TeacherDocuments = documents;
-                ViewBag.TeacherDocumentsMessage = "Antal dokument är " + documents.Count + ".";
+                ViewBag.UserDocuments = documents;
+                ViewBag.UserDocumentsMessage = "Antal dokument är " + documents.Count + ".";
                 #endregion documents
 
                 return View(await db.Courses.ToListAsync());
@@ -283,7 +295,7 @@ namespace LittleLMS.LittleLMSControllers
         {
             Document document = await db.Documents.FindAsync(id);
 
-            return File(document.Content, document.ContentType, Path.GetFileName(document.DocumentName));
+            return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
         }
 
         protected override void Dispose(bool disposing)

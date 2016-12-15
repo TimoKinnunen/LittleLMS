@@ -151,9 +151,13 @@
 </table>
 
 <table class="table">
-    @if (User.IsInRole("Lärare"))
+    @if (User.IsInRole("Lärare")|| User.IsInRole("Elev"))
     {
         <tr>
+            <th>
+                Mottagartyp
+                @*@Html.DisplayNameFor(model => model.ReceiverType.Name)*@
+            </th>
             <th>
                 Dokumenttyp
                 @*@Html.DisplayNameFor(model => model.DocumentType.Name)*@
@@ -176,9 +180,12 @@
             </th>
         </tr>
 
-        foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Document>)ViewBag.TeacherDocuments)
+        foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Document>)ViewBag.UserDocuments)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiverType.Name)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentType.Name)
                 </td>
