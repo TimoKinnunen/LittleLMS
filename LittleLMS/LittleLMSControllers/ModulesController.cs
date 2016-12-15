@@ -114,7 +114,7 @@ namespace LittleLMS.LittleLMSControllers
             #region course
             Course course = db.Courses.Find(courseId);
             ViewBag.CourseId = course.Id;
-            ViewBag.HeaderText = "Kurs: " + course.Name;
+            ViewBag.CourseName  = course.Name;
             //ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
             #endregion course
 

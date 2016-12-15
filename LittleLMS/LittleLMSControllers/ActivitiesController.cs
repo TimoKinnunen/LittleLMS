@@ -12,6 +12,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Web;
 
     [Authorize(Roles = "Lärare")]
@@ -109,6 +110,25 @@ namespace LittleLMS.LittleLMSControllers
         {
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name");
             //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
+
+            #region course
+            Module module = db.Modules.Find(moduleId);
+            int courseId = module.CourseId;
+            Course course = db.Courses.Find(courseId);
+            ViewBag.CourseName = course.Name;
+            //ViewBag.HeaderText = "Kurs: " + course.Name + " >> " + "Modul: " + module.Name;
+            //ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
+            //ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
+            #endregion course
+
+            #region module
+            ViewBag.ModuleName = module.Name;
+            //ViewBag.HeaderTextModule = "Modul: " + module.Name;
+            //ViewBag.ModuleDescription = "Modulbeskrivning: " + module.Description;
+            //ViewBag.ModuleInterval = module.StartDate > DateTime.Now ? "Modulen startar " : "Modulen har startat " + string.Format("{0:d}.", module.StartDate);
+            #endregion module
+
+
             ViewBag.ModuleId = moduleId;
             return View();
         }
@@ -149,6 +169,7 @@ namespace LittleLMS.LittleLMSControllers
             }
             ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
             //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            ViewBag.ModuleId = activity.ModuleId;
             return View(activity);
         }
 
@@ -188,6 +209,7 @@ namespace LittleLMS.LittleLMSControllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ModuleId = activity.ModuleId;
             return View(activity);
         }
 
