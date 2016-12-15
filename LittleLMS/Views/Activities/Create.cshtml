@@ -4,7 +4,9 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Lägg till</h2>
+<h6><b>Kurs: </b>@ViewBag.CourseName >> <b>Modul: </b>@ViewBag.ModuleName</h6>
+<br />
+@*<h3>@ViewBag.HeaderTextModule</h3>*@
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +14,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Aktivitet</h4>
+        <h4>Lägg till Aktivitet</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
