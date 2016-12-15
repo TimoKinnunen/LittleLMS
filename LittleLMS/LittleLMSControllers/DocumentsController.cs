@@ -96,7 +96,7 @@ namespace LittleLMS.LittleLMSControllers
                 };
 
                 #region students
-                var students = new List<DocumentStudentsViewModel>();
+                var students = new List<DocumentStudentViewModel>();
 
                 foreach (var applicationUser in await UserManager.Users.ToListAsync())
                 {
@@ -105,7 +105,7 @@ namespace LittleLMS.LittleLMSControllers
                     {
                         if (applicationUser.Id != userId)
                         {
-                            students.Add(new DocumentStudentsViewModel
+                            students.Add(new DocumentStudentViewModel
                             {
                                 StudentId = applicationUser.Id,
                                 StudentName = applicationUser.FullName,

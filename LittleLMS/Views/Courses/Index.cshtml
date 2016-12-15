@@ -151,8 +151,9 @@
 </table>
 
 <table class="table">
-    @if (User.IsInRole("Lärare")|| User.IsInRole("Elev"))
+    @if (User.IsInRole("Lärare") || User.IsInRole("Elev"))
     {
+        <caption>@Html.Label("Dokument:")<br />@ViewBag.UserDocumentsMessage</caption>
         <tr>
             <th>
                 Mottagartyp
