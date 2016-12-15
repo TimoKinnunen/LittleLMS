@@ -60,6 +60,7 @@ namespace LittleLMS.LittleLMSControllers
         public async Task<ActionResult> Index(int? courseId)
         {
             ViewBag.CourseModules = new List<Module>();
+            ViewBag.ModuleDocuments = new List<Document>();
             ViewBag.CourseModulesMessage = "Kursen saknar moduler.";
 
             if (User.IsInRole("Lärare"))
@@ -86,7 +87,21 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
 
-                return View(await db.Modules.Where(m => m.CourseId == courseId).ToListAsync());
+                #region module documents
+                var modules = await db.Modules.Where(m => m.CourseId == courseId).ToListAsync();
+                var moduleDocuments = new List<Document>();
+                foreach (var module in modules)
+                {
+                    foreach (var document in module.ModuleDocuments)
+                    {
+                        moduleDocuments.Add(document);
+                    }
+                }
+                ViewBag.ModuleDocuments = moduleDocuments;
+                ViewBag.ModuleDocumentsMessage = "Antal dokument är " + moduleDocuments.Count + ".";
+                #endregion module documents
+
+                return View(modules);
             }
 
             return View(await db.Modules.ToListAsync());

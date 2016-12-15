@@ -95,9 +95,31 @@ namespace LittleLMS.LittleLMSControllers
                     UploadedByName = user.FullName
                 };
 
+                #region teachers
+                var teachers = new List<DocumentTeacherViewModel>();
+                foreach (var applicationUser in await UserManager.Users.ToListAsync())
+                {
+                    var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
+                    if (userRoles.Contains("Lärare"))
+                    {
+                        if (applicationUser.Id != userId)
+                        {
+                            teachers.Add(new DocumentTeacherViewModel
+                            {
+                                TeacherId = applicationUser.Id,
+                                TeacherName = applicationUser.FullName,
+                                TeacherEmail = applicationUser.Email,
+                                IsSelected = false
+                            });
+                        }
+                    }
+                }
+                ViewBag.AllTeachers = teachers;
+                ViewBag.AllTeachersMessage = "Dela dokumentet till " + teachers.Count + " lärare.";
+                #endregion teachers
+
                 #region students
                 var students = new List<DocumentStudentViewModel>();
-
                 foreach (var applicationUser in await UserManager.Users.ToListAsync())
                 {
                     var userRoles = await UserManager.GetRolesAsync(applicationUser.Id);
@@ -116,8 +138,56 @@ namespace LittleLMS.LittleLMSControllers
                     }
                 }
                 ViewBag.AllStudents = students;
-                ViewBag.AllStudentsMessage = "Antal elever är " + students.Count + ".";
+                ViewBag.AllStudentsMessage = "Dela dokumentet till " + students.Count + " elever.";
                 #endregion students
+
+                #region courses, modules, activities
+                var courses = new List<DocumentCourseViewModel>();
+                var modules = new List<DocumentModuleViewModel>();
+                var activities = new List<DocumentActivityViewModel>();
+                foreach (var course in await db.Courses.OrderByDescending(c => c.StartDate).ToListAsync())
+                {
+                    courses.Add(new DocumentCourseViewModel
+                    {
+                        CourseId = course.Id.ToString(),
+                        CourseName = course.Name,
+                        CourseDescription = course.Description,
+                        CourseStartDate = course.StartDate,
+                        IsSelected = false
+                    });
+                    foreach (var module in await db.Modules.OrderByDescending(c => c.StartDate).ToListAsync())
+                    {
+                        modules.Add(new DocumentModuleViewModel
+                        {
+                            ModuleId = module.Id.ToString(),
+                            ModuleCourseName = course.Name,
+                            ModuleName = module.Name,
+                            ModuleDescription = module.Description,
+                            ModuleStartDate = module.StartDate,
+                            IsSelected = false
+                        });
+                        foreach (var activity in await db.Activities.OrderByDescending(c => c.StartDate).ToListAsync())
+                        {
+                            activities.Add(new DocumentActivityViewModel
+                            {
+                                ActivityId = activity.Id.ToString(),
+                                ActivityCourseName = course.Name,
+                                ActivityModuleName = module.Name,
+                                ActivityName = activity.Name,
+                                ActivityDescription = activity.Description,
+                                ActivityStartDate = activity.StartDate,
+                                IsSelected = false
+                            });
+                        }
+                    }
+                }
+                ViewBag.AllCourses = courses;
+                ViewBag.AllCoursesMessage = "Dela dokumentet till " + courses.Count + " kurser.";
+                ViewBag.AllModules = modules;
+                ViewBag.AllModulesMessage = "Dela dokumentet till " + modules.Count + " moduler.";
+                ViewBag.AllActivities = activities;
+                ViewBag.AllActivitiesMessage = "Dela dokumentet till " + activities.Count + " aktiviteter.";
+                #endregion courses, modules, activities
 
                 return View(document);
             }
@@ -131,7 +201,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, string[] students, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, string[] teachers, string[] students, string[] courses, string[] modules, string[] activities, HttpPostedFileBase upload)
         {
             try
             {
@@ -161,35 +231,102 @@ namespace LittleLMS.LittleLMSControllers
                                 dokumentToUpload.Content = binaryReader.ReadBytes(upload.ContentLength);
                             }
 
-                            #region add document to inlogged user's list of documents
                             db.Documents.Add(dokumentToUpload);
                             await db.SaveChangesAsync();
 
+                            #region add document to logged in user's list of documents
                             var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
                             if (dbUser != null)
                             {
                                 dbUser.UserDocuments.Add(dokumentToUpload);
                                 await db.SaveChangesAsync();
                             }
-                            #endregion add document to inlogged user's list of documents
+                            #endregion add document to logged in user's list of documents
+
+                            #region add document to marked teacher's list of documents
+                            if (teachers != null)
+                            {
+                                foreach (var teacher in teachers)
+                                {
+                                    var lärare = db.Users.Where(u => u.Id == teacher).FirstOrDefault();
+                                    if (lärare != null)
+                                    {
+                                        lärare.UserDocuments.Add(dokumentToUpload);
+                                    }
+                                }
+                                await db.SaveChangesAsync();
+                            };
+                            #endregion add document to marked teacher's list of documents
 
                             #region add document to marked student's list of documents
-                            foreach (var student in students)
+                            if (students != null)
                             {
-                                var elev = db.Users.Where(u => u.Id == student).FirstOrDefault();
-                                if (elev != null)
+                                foreach (var student in students)
                                 {
-                                    elev.UserDocuments.Add(dokumentToUpload);
+                                    var elev = db.Users.Where(u => u.Id == student).FirstOrDefault();
+                                    if (elev != null)
+                                    {
+                                        elev.UserDocuments.Add(dokumentToUpload);
+                                    }
                                 }
-                            }
-                            await db.SaveChangesAsync();
-                            #endregion add document to marked students list of documents
+                                await db.SaveChangesAsync();
+                            };
+                            #endregion add document to marked student's list of documents
+
+                            #region add document to marked course's list of documents
+                            if (courses != null)
+                            {
+                                foreach (var course in courses)
+                                {
+                                    int courseId = int.Parse(course); // LINQ inline is wrong
+                                    var kurs = db.Courses.Where(u => u.Id == courseId).FirstOrDefault();
+                                    if (kurs != null)
+                                    {
+                                        kurs.CourseDocuments.Add(dokumentToUpload);
+                                    }
+                                }
+                                await db.SaveChangesAsync();
+                            };
+                            #endregion add document to marked course's list of documents
+
+                            #region add document to marked module's list of documents
+                            if (modules != null)
+                            {
+                                foreach (var module in modules)
+                                {
+                                    int moduleId = int.Parse(module); // LINQ inline is wrong
+                                    var modul = db.Modules.Where(u => u.Id == moduleId).FirstOrDefault();
+                                    if (modul != null)
+                                    {
+                                        modul.ModuleDocuments.Add(dokumentToUpload);
+                                    }
+                                }
+                                await db.SaveChangesAsync();
+                            };
+                            #endregion add document to marked module's list of documents
+
+                            #region add document to marked activity's list of documents
+                            if (activities != null)
+                            {
+                                foreach (var activity in activities)
+                                {
+                                    int activityId = int.Parse(activity); // LINQ inline is wrong
+                                    var aktivitet = db.Activities.Where(a => a.Id == activityId).FirstOrDefault();
+                                    if (aktivitet != null)
+                                    {
+                                        aktivitet.ActivityDocuments.Add(dokumentToUpload);
+                                    }
+                                }
+                                await db.SaveChangesAsync();
+                            };
+                            #endregion add document to marked activity's list of documents
                         }
                     }
                     else
                     {
                         ModelState.AddModelError("", "Du måste välja en fil eller gå tillbaka till listan.");
                         ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
+                        ViewBag.ReceiverTypeId = new SelectList(db.ReceiverTypes, "Id", "Name", document.ReceiverTypeId);
                         return View(document);
                     }
                 }
@@ -197,13 +334,13 @@ namespace LittleLMS.LittleLMSControllers
                 return RedirectToAction("Index");
 
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (RetryLimitExceededException)
             {
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "Id", "Name", document.DocumentTypeId);
+            ViewBag.ReceiverTypeId = new SelectList(db.ReceiverTypes, "Id", "Name", document.ReceiverTypeId);
             return View(document);
         }
 

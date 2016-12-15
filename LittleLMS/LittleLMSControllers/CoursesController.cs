@@ -66,6 +66,11 @@ namespace LittleLMS.LittleLMSControllers
             ViewBag.CourseModulesMessage = "Kursen saknar moduler.";
             ViewBag.ModuleActivitiesMessage = "Modulen saknar aktiviteter.";
             ViewBag.CourseStudentsMessage = "Kurs saknar deltagare.";
+            ViewBag.TeacherDocuments = new List<Document>();
+            ViewBag.StudentDocuments = new List<Document>();
+            ViewBag.CourseDocuments = new List<Document>();
+            ViewBag.ModuleDocuments = new List<Document>();
+            ViewBag.ActivityDocuments = new List<Document>();
 
             if (User.IsInRole("Elev"))
             {
@@ -86,6 +91,19 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseDescription = "Kursbeskrivning: " + course.Description;
                 ViewBag.CourseInterval = course.StartDate > DateTime.Now ? "Kursen startar " : "Kursen har startat " + string.Format("{0:d}.", course.StartDate);
                 #endregion course
+
+                #region student documents
+                var documents = new List<Document>();
+
+                var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
+                if (dbUser != null)
+                {
+                    documents = dbUser.UserDocuments.ToList();
+                }
+
+                ViewBag.StudentDocuments = documents;
+                ViewBag.StudentDocumentsMessage = "Antal dokument är " + documents.Count + ".";
+                #endregion student documents
 
                 #region module
                 Module existingModule = null;
@@ -112,7 +130,26 @@ namespace LittleLMS.LittleLMSControllers
                     {
                         ViewBag.ModuleActivities = moduleActivities;
                         ViewBag.ModuleActivitiesMessage = "Modulens namn: " + existingModule.Name + ".";
+
+                        #region activity documents
+                        List<Document> activityDocuments = new List<Document>();
+                        foreach (var activity in moduleActivities)
+                        {
+                            foreach (var document in activity.ActivityDocuments)
+                            {
+                                activityDocuments.Add(document);
+                            }
+                        }
+                        ViewBag.ActivityDocuments = activityDocuments;
+                        ViewBag.ActivityDocumentsMessage = "Antal dokument är " + activityDocuments.Count + ".";
+                        #endregion activity documents
+
                     }
+                    #region module documents
+                    var moduleDocuments = existingModule.ModuleDocuments.ToList();
+                    ViewBag.ModuleDocuments = moduleDocuments;
+                    ViewBag.ModuleDocumentsMessage = "Antal dokument är " + moduleDocuments.Count + ".";
+                    #endregion module documents
                 }
                 #endregion module
 
@@ -136,18 +173,11 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
                 #endregion students
 
-                #region documents
-                var documents = new List<Document>();
-
-                var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
-                if (dbUser != null)
-                {
-                    documents = dbUser.UserDocuments.ToList();
-                }
-
-                ViewBag.UserDocuments = documents;
-                ViewBag.UserDocumentsMessage = "Antal dokument är " + documents.Count + ".";
-                #endregion documents
+                #region course documents
+                var courseDocuments = course.CourseDocuments.ToList();
+                ViewBag.CourseDocuments = courseDocuments;
+                ViewBag.CourseDocumentsMessage = "Antal dokument är " + courseDocuments.Count + ".";
+                #endregion course documents
 
                 return View(await db.Courses.Where(c => c.Id == courseId).ToListAsync());
             }
@@ -175,7 +205,7 @@ namespace LittleLMS.LittleLMSControllers
                 ViewBag.CourseStudentsMessage = "Antal elever är " + students.Count + ".";
                 #endregion students
 
-                #region documents
+                #region teacher documents
                 var documents = new List<Document>();
 
                 var dbUser = await db.Users.FirstAsync(u => u.Id == userId);
@@ -184,9 +214,9 @@ namespace LittleLMS.LittleLMSControllers
                     documents = dbUser.UserDocuments.ToList();
                 }
 
-                ViewBag.UserDocuments = documents;
-                ViewBag.UserDocumentsMessage = "Antal dokument är " + documents.Count + ".";
-                #endregion documents
+                ViewBag.TeacherDocuments = documents;
+                ViewBag.TeacherDocumentsMessage = "Antal dokument är " + documents.Count + ".";
+                #endregion teacher documents
 
                 return View(await db.Courses.ToListAsync());
             }

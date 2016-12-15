@@ -56,6 +56,60 @@
     }
 </table>
 
+<table class="table">
+    @if (User.IsInRole("Lärare") || User.IsInRole("Elev"))
+    {
+        <caption>@Html.Label("Alla moduler dokument:")<br />@ViewBag.ModuleDocumentsMessage</caption>
+        <tr>
+            <th>
+                Mottagartyp
+            </th>
+            <th>
+                Dokumenttyp
+            </th>
+            <th>
+                Dokumentnamn
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Uppladdad av
+            </th>
+            <th>
+                Registreringsdatum
+            </th>
+        </tr>
+
+        foreach (var item in (IEnumerable<LittleLMS.LittleLMSModels.Document>)ViewBag.ModuleDocuments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiverType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadedByName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOfRegistration)
+                </td>
+                <td>
+                    @Html.ActionLink("Ladda ner", "Download", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    }
+</table>
+
 @if (User.IsInRole("Lärare"))
 {
     <div>

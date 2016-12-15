@@ -5,6 +5,7 @@
 }
 
 <h2>Ladda upp</h2>
+<h5>Innan du trycker på knappen 'Ladda upp' välj de du vill dela dokumentet till.</h5>
 
 @using (Html.BeginForm("UploadFile", "Documents", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -67,9 +68,36 @@
             </div>
         </div>
 
-        <h4>Dela dokumentet till elever</h4>
+        <h4>@ViewBag.AllTeachersMessage</h4>
         <table class="table">
-            <tr >
+            <tr>
+                <th></th>
+                <th>
+                    Namn
+                </th>
+                <th>
+                    E-post adress
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in (IEnumerable<LittleLMS.LittleLMSViewModels.DocumentTeacherViewModel>)ViewBag.AllTeachers)
+            {
+                <tr>
+                    <td><input type="checkbox" name="teachers" value=@item.TeacherId /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeacherName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeacherEmail)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <h4>@ViewBag.AllStudentsMessage</h4>
+        <table class="table">
+            <tr>
                 <th></th>
                 <th>
                     Namn
@@ -89,6 +117,123 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StudentEmail)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <h4>@ViewBag.AllCoursesMessage</h4>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>
+                    Kursnamn
+                </th>
+                <th>
+                    Beskrivning
+                </th>
+                <th>
+                    Startdatum
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in (IEnumerable<LittleLMS.LittleLMSViewModels.DocumentCourseViewModel>)ViewBag.AllCourses)
+            {
+                <tr>
+                    <td><input type="checkbox" name="courses" value=@item.CourseId /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseStartDate)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <h4>@ViewBag.AllModulesMessage</h4>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>
+                    Kursnamn
+                </th>
+                <th>
+                    Modulnamn
+                </th>
+                <th>
+                    Beskrivning
+                </th>
+                <th>
+                    Startdatum
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in (IEnumerable<LittleLMS.LittleLMSViewModels.DocumentModuleViewModel>)ViewBag.AllModules)
+            {
+                <tr>
+                    <td><input type="checkbox" name="modules" value=@item.ModuleId /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModuleCourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModuleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModuleDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModuleStartDate)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <h4>@ViewBag.AllActivitiesMessage</h4>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>
+                    Kursnamn
+                </th>
+                <th>
+                    Modulnamn
+                </th>
+                <th>
+                    Aktivitetsnamn
+                </th>
+                <th>
+                    Beskrivning
+                </th>
+                <th>
+                    Startdatum
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in (IEnumerable<LittleLMS.LittleLMSViewModels.DocumentActivityViewModel>)ViewBag.AllActivities)
+            {
+                <tr>
+                    <td><input type="checkbox" name="activities" value=@item.ActivityId /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityCourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityModuleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityStartDate)
                     </td>
                 </tr>
             }

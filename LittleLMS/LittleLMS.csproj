@@ -246,7 +246,10 @@
     <Compile Include="LittleLMSModels\DocumentType.cs" />
     <Compile Include="LittleLMSModels\Module.cs" />
     <Compile Include="LittleLMSControllers\StudentsController.cs" />
+    <Compile Include="LittleLMSViewModels\DocumentActivityViewModel.cs" />
+    <Compile Include="LittleLMSViewModels\DocumentModuleViewModel.cs" />
     <Compile Include="LittleLMSViewModels\DocumentCourseViewModel.cs" />
+    <Compile Include="LittleLMSViewModels\DocumentTeacherViewModel.cs" />
     <Compile Include="LittleLMSViewModels\DocumentViewModel.cs" />
     <Compile Include="LittleLMSViewModels\DocumentStudentViewModel.cs" />
     <Compile Include="LittleLMSViewModels\UserViewModel.cs" />

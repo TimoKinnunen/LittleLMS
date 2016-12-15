@@ -140,10 +140,25 @@ namespace LittleLMS.LittleLMSControllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,ActivityTypeId,ModuleId,Name,Description,StartDate,EndDate")] Activity activity)
         {
+
             if (ModelState.IsValid)
             {
                 //var xxx = activity.ModuleId;
                 Module module = await db.Modules.FindAsync(activity.ModuleId);
+                if (module.StartDate > activity.StartDate)
+                {
+                    ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
+                    //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+                    ModelState.AddModelError("", "Aktivitetens startdatum måste vara minst modulens startdatum " + module.StartDate + ".");
+                    return View(activity);
+                }
+                if (activity.StartDate > activity.EndDate)
+                {
+                    ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activity.ActivityTypeId);
+                    //ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+                    ModelState.AddModelError("", "Aktivitetens startdatum måste vara mindre än aktivitetens slutdatum " + activity.EndDate + ".");
+                    return View(activity);
+                }
                 db.Activities.Add(activity);
                 await db.SaveChangesAsync();
                 int m_id = (int)activity.ModuleId;
