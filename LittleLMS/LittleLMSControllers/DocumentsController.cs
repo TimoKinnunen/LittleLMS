@@ -201,7 +201,7 @@ namespace LittleLMS.LittleLMSControllers
         // http://www.mikesdotnetting.com/article/259/asp-net-mvc-5-with-ef-6-working-with-files
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, string[] teachers, string[] students, string[] courses, string[] modules, string[] activities, HttpPostedFileBase upload)
+        public async Task<ActionResult> UploadFile([Bind(Include = "Id,DocumentTypeId,ReceiverTypeId,FileName,DocumentName,Description,UploadedByName,UploadedByUserId,TimeOfRegistration,ContentType,Content")] Document document, string[] teachers, string[] students, int[] courses, int[] modules, int[] activities, HttpPostedFileBase upload)
         {
             try
             {
@@ -278,8 +278,7 @@ namespace LittleLMS.LittleLMSControllers
                             {
                                 foreach (var course in courses)
                                 {
-                                    int courseId = int.Parse(course); // LINQ inline is wrong
-                                    var kurs = db.Courses.Where(u => u.Id == courseId).FirstOrDefault();
+                                    var kurs = db.Courses.Where(u => u.Id == course).FirstOrDefault();
                                     if (kurs != null)
                                     {
                                         kurs.CourseDocuments.Add(dokumentToUpload);
@@ -294,8 +293,7 @@ namespace LittleLMS.LittleLMSControllers
                             {
                                 foreach (var module in modules)
                                 {
-                                    int moduleId = int.Parse(module); // LINQ inline is wrong
-                                    var modul = db.Modules.Where(u => u.Id == moduleId).FirstOrDefault();
+                                    var modul = db.Modules.Where(u => u.Id == module).FirstOrDefault();
                                     if (modul != null)
                                     {
                                         modul.ModuleDocuments.Add(dokumentToUpload);
@@ -310,8 +308,7 @@ namespace LittleLMS.LittleLMSControllers
                             {
                                 foreach (var activity in activities)
                                 {
-                                    int activityId = int.Parse(activity); // LINQ inline is wrong
-                                    var aktivitet = db.Activities.Where(a => a.Id == activityId).FirstOrDefault();
+                                    var aktivitet = db.Activities.Where(a => a.Id == activity).FirstOrDefault();
                                     if (aktivitet != null)
                                     {
                                         aktivitet.ActivityDocuments.Add(dokumentToUpload);
