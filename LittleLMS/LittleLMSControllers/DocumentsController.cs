@@ -17,7 +17,7 @@ namespace LittleLMS.LittleLMSControllers
     using System.Linq;
     using System.Web;
 
-    [Authorize(Roles = "Lärare")]
+    [Authorize(Roles = "Lärare,Elev")]
     public class DocumentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -353,6 +353,7 @@ namespace LittleLMS.LittleLMSControllers
             return File(document.Content, document.ContentType, Path.GetFileName(document.FileName));
         }
 
+        [Authorize(Roles = "Lärare")]
         // GET: Documents/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -380,6 +381,7 @@ namespace LittleLMS.LittleLMSControllers
             return View(documentViewModel);
         }
 
+        [Authorize(Roles = "Lärare")]
         // POST: Documents/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -419,6 +421,7 @@ namespace LittleLMS.LittleLMSControllers
             return View(document);
         }
 
+        [Authorize(Roles = "Lärare")]
         // GET: Documents/DeleteDocument/5
         public async Task<ActionResult> DeleteDocument(int? id)
         {
@@ -434,6 +437,7 @@ namespace LittleLMS.LittleLMSControllers
             return View(document);
         }
 
+        [Authorize(Roles = "Lärare")]
         // POST: Documents/DeleteDocument/5
         [HttpPost, ActionName("DeleteDocument")]
         [ValidateAntiForgeryToken]
