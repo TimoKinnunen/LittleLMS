@@ -99,6 +99,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DocumentTypeId" Type="int" Nullable="false" />
+          <Property Name="ReceiverTypeId" Type="int" Nullable="false" />
           <Property Name="DocumentName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="FileName" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
@@ -133,6 +134,13 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReceiverTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId">
           <End Role="ActivityTypes" Type="Self.ActivityTypes" Multiplicity="1">
@@ -300,6 +308,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId">
+          <End Role="ReceiverTypes" Type="Self.ReceiverTypes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceiverTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="ReceiverTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_ModuleDocuments_dbo_Documents_Document_Id">
           <End Role="Documents" Type="Self.Documents" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -356,6 +378,7 @@
           <EntitySet Name="DocumentTypes" EntityType="Self.DocumentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModuleDocuments" EntityType="Self.ModuleDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Modules" EntityType="Self.Modules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReceiverTypes" EntityType="Self.ReceiverTypes" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId" Association="Self.FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId">
             <End Role="ActivityTypes" EntitySet="ActivityTypes" />
             <End Role="Activities" EntitySet="Activities" />
@@ -402,6 +425,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId" Association="Self.FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId">
             <End Role="DocumentTypes" EntitySet="DocumentTypes" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId" Association="Self.FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId">
+            <End Role="ReceiverTypes" EntitySet="ReceiverTypes" />
             <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_ModuleDocuments_dbo_Documents_Document_Id" Association="Self.FK_dbo_ModuleDocuments_dbo_Documents_Document_Id">
@@ -495,6 +522,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DocumentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverTypeId" Type="Int32" Nullable="false" />
           <Property Name="DocumentName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
@@ -504,6 +532,7 @@
           <Property Name="ContentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Content" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="DocumentTypes" Relationship="Self.FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId" FromRole="Documents" ToRole="DocumentTypes" />
+          <NavigationProperty Name="ReceiverTypes" Relationship="Self.FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId" FromRole="Documents" ToRole="ReceiverTypes" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.ApplicationUserDocuments" FromRole="Documents" ToRole="AspNetUsers" />
           <NavigationProperty Name="Courses" Relationship="Self.CourseDocuments" FromRole="Documents" ToRole="Courses" />
           <NavigationProperty Name="Activities" Relationship="Self.DocumentActivities" FromRole="Documents" ToRole="Activities" />
@@ -530,6 +559,14 @@
           <NavigationProperty Name="Activities" Relationship="Self.FK_dbo_Activities_dbo_Modules_ModuleId" FromRole="Modules" ToRole="Activities" />
           <NavigationProperty Name="Courses" Relationship="Self.FK_dbo_Modules_dbo_Courses_CourseId" FromRole="Modules" ToRole="Courses" />
           <NavigationProperty Name="Documents" Relationship="Self.ModuleDocuments" FromRole="Modules" ToRole="Documents" />
+        </EntityType>
+        <EntityType Name="ReceiverTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId" FromRole="ReceiverTypes" ToRole="Documents" />
         </EntityType>
         <Association Name="FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId">
           <End Role="ActivityTypes" Type="Self.ActivityTypes" Multiplicity="1">
@@ -599,6 +636,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId">
+          <End Role="ReceiverTypes" Type="Self.ReceiverTypes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceiverTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="ReceiverTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ApplicationUserDocuments">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
           <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
@@ -619,7 +670,7 @@
           <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
           <End Role="Modules" Type="Self.Modules" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activities" EntityType="Self.Activities" />
           <EntitySet Name="ActivityTypes" EntityType="Self.ActivityTypes" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
@@ -628,6 +679,7 @@
           <EntitySet Name="Documents" EntityType="Self.Documents" />
           <EntitySet Name="DocumentTypes" EntityType="Self.DocumentTypes" />
           <EntitySet Name="Modules" EntityType="Self.Modules" />
+          <EntitySet Name="ReceiverTypes" EntityType="Self.ReceiverTypes" />
           <AssociationSet Name="FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId" Association="Self.FK_dbo_Activities_dbo_ActivityTypes_ActivityTypeId">
             <End Role="ActivityTypes" EntitySet="ActivityTypes" />
             <End Role="Activities" EntitySet="Activities" />
@@ -646,6 +698,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId" Association="Self.FK_dbo_Documents_dbo_DocumentTypes_DocumentTypeId">
             <End Role="DocumentTypes" EntitySet="DocumentTypes" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId" Association="Self.FK_dbo_Documents_dbo_ReceiverTypes_ReceiverTypeId">
+            <End Role="ReceiverTypes" EntitySet="ReceiverTypes" />
             <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="ApplicationUserDocuments" Association="Self.ApplicationUserDocuments">
@@ -674,7 +730,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities2">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities3">
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="Model.Activities">
               <MappingFragment StoreEntitySet="Activities">
@@ -741,6 +797,7 @@
               <MappingFragment StoreEntitySet="Documents">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="ReceiverTypeId" ColumnName="ReceiverTypeId" />
                 <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -769,6 +826,14 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReceiverTypes">
+            <EntityTypeMapping TypeName="Model.ReceiverTypes">
+              <MappingFragment StoreEntitySet="ReceiverTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

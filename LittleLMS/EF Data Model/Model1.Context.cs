@@ -13,10 +13,10 @@ namespace LittleLMS.EF_Data_Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities2 : DbContext
+    public partial class Entities3 : DbContext
     {
-        public Entities2()
-            : base("name=Entities2")
+        public Entities3()
+            : base("name=Entities3")
         {
         }
     
@@ -33,5 +33,6 @@ namespace LittleLMS.EF_Data_Model
         public virtual DbSet<Documents> Documents { get; set; }
         public virtual DbSet<DocumentTypes> DocumentTypes { get; set; }
         public virtual DbSet<Modules> Modules { get; set; }
+        public virtual DbSet<ReceiverTypes> ReceiverTypes { get; set; }
     }
 }

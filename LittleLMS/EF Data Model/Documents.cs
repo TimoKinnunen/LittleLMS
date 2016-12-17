@@ -25,6 +25,7 @@ namespace LittleLMS.EF_Data_Model
     
         public int Id { get; set; }
         public int DocumentTypeId { get; set; }
+        public int ReceiverTypeId { get; set; }
         public string DocumentName { get; set; }
         public string FileName { get; set; }
         public string Description { get; set; }
@@ -35,6 +36,7 @@ namespace LittleLMS.EF_Data_Model
         public byte[] Content { get; set; }
     
         public virtual DocumentTypes DocumentTypes { get; set; }
+        public virtual ReceiverTypes ReceiverTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
